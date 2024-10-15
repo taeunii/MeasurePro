@@ -35,15 +35,17 @@ function ProjectCreateModal(props) {
             })
     }, [])
 
-
     // 프로젝트 생성
     const handleCreateProject = async () => {
+        const selectedCompany = companyIdx ? companyList.find(item => item.idx === parseInt(companyIdx)) : null;
+
         console.log(geometryData);
+        console.log(selectedCompany);
         const wkt = `POLYGON((${geometryData.map(coord => `${coord[1]} ${coord[0]}`).join(', ')}))`;
         console.log(wkt);
         axios.post(`http://localhost:8080/MeausrePro/Project/save`, {
             userIdx: user,
-            companyIdx: companyIdx,
+            companyIdx: selectedCompany,
             siteName: siteName,
             siteAddress: address,
             startDate: startDate,
@@ -232,7 +234,7 @@ function ProjectCreateModal(props) {
                                         <option selected>선택하세요</option>
                                         {companyList.map((item) => {
                                             return (
-                                                <option value={item} key={item.idx}>
+                                                <option value={item.idx} key={item.idx}>
                                                     {item.companyName}
                                                 </option>
                                             )

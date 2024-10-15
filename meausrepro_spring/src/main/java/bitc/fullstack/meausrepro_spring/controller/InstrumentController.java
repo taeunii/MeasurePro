@@ -1,8 +1,10 @@
 package bitc.fullstack.meausrepro_spring.controller;
 
 import bitc.fullstack.meausrepro_spring.dto.InsGeometryDto;
+import bitc.fullstack.meausrepro_spring.model.MeausreProInsType;
 import bitc.fullstack.meausrepro_spring.model.MeausreProInstrument;
 import bitc.fullstack.meausrepro_spring.service.InstrumentService;
+import bitc.fullstack.meausrepro_spring.service.InstrumentTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,21 +19,30 @@ public class InstrumentController {
     @Autowired
     private InstrumentService instrumentService;
 
-    // 계측기 저장
+    @Autowired
+    private InstrumentTypeService instrumentTypeService;
+
     @PostMapping("/save")
-    public ResponseEntity<MeausreProInstrument> save(@RequestBody MeausreProInstrument instrument) {
+    public ResponseEntity<MeausreProInsType> save(@RequestBody InsGeometryDto request) {
+        MeausreProInstrument instrument = request.getInstrument();
+        MeausreProInsType insType = request.getInsType();
+
         if (instrument.getInsGeometry() == null || instrument.getInsGeometry().isEmpty()) {
             return ResponseEntity.badRequest().body(null);
         }
-        System.out.println("받은 지오메트리 : " + instrument.getInsGeometry());
 
-        // 계측기 저장 후 저장된 객체 반환
+        // 계측기 저장
         MeausreProInstrument savedInstrument = instrumentService.save(instrument);
 
-        // 저장된 계측기 데이터 반환
-        return ResponseEntity.ok(savedInstrument);
-    }
+        // insType에 instrId 설정
+        insType.setInstrId(savedInstrument);
 
+        // insType 저장
+        MeausreProInsType savedInsType = instrumentTypeService.save(insType);
+
+        // 저장된 데이터 반환
+        return ResponseEntity.ok(savedInsType);
+    }
 
     // 특정 구간 계측기 보기
     @GetMapping("/section/{sectionId}")
@@ -90,6 +101,7 @@ public class InstrumentController {
     public ResponseEntity<String> deleteInstrument(@PathVariable("idx") int idx) {
         Optional<MeausreProInstrument> instrument = instrumentService.findById(idx);
         if (instrument.isPresent()) {
+            instrumentTypeService.deleteByInsId(idx); // 관련 정보 먼저 삭제
             instrumentService.deleteById(idx); // 계측기 삭제
             return ResponseEntity.ok("계측기 삭제 성공");
         } else {

@@ -230,7 +230,6 @@ body {
   padding: 0em;
 }
 .projectItem {
-  padding: 1em 1.5em;
   border: none;
   width: 100%;
   text-align: left;
@@ -238,12 +237,32 @@ body {
   color: #252525;
   transition: all 0.4s ease;
 }
+.projectNameSection {
+  padding: 1em 1.5em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .projectItem.selected,
 .projectItem:hover,
 .projectBtn{
   background-color: #a1e5c4;
   color: white;
-  font-size: 18px;
+}
+.projectItem .insCreateBtn {
+  border-radius: 1.2em;
+  border: 1px solid #7cc499;
+  background-color: #7cc499;
+  color: #ffffff;
+  font-size: 0.7em;
+  transition: all 0.5s ease;
+  padding: 0.5em 0.8em;
+}
+.projectItem:hover .insCreateBtn:hover,
+.projectItem.selected .insCreateBtn:hover{
+  border: 1px solid #5ca47a;
+  background-color: #5ca47a;
+  font-size: 0.7em;
 }
 .projectItem button,
 .sideBarBtn {
@@ -311,14 +330,19 @@ body {
   color: white;
   background-color: #8fbda2;
 }
-
 .instrument-list {
+  display: none;
+  padding: 0.5em 1em 0.5em 1em;
+  background-color: #f3f3f3;
+  color: #49524c;
   list-style: none;
-  padding: 5px;
-  margin: 5px;
+  transition: all 0.5s ease;
 }
-
+.instrument-list.open {
+  display: block;
+}
 .instrument-item {
-  padding: 5px;
-  font-size: 15px; /* 글자 크기 */
+  padding: 0.5em;
+  font-size: 0.9em;
+  cursor: pointer;
 }

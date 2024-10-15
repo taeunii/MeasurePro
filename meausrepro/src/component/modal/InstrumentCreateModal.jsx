@@ -123,6 +123,62 @@ function InstrumentCreateModal(props) {
 
         const selectedInsType = insTypeData[insType];
 
+        let InsType;
+
+        if (selectedInsType === 'A' || selectedInsType === 'B' || selectedInsType === 'C') {
+            if (selectedInsType === 'A') {
+                InsType = {
+                    logger: logger,
+                    knTone: knTone,
+                    displacement: displacement,
+                    depExcavation: depExcavation,
+                    zeroRead: zeroRead,
+                    instrument: instrument
+                };
+            }
+            else if (selectedInsType === 'B') {
+                InsType = {
+                    logger: logger,
+                    knTone: knTone,
+                    displacement: displacement,
+                    depExcavation: depExcavation,
+                    zeroRead: zeroRead,
+                    instrument: instrument,
+                    tenAllowable: tenAllowable
+                };
+            }
+            else {
+                InsType = {
+                    logger: logger,
+                    knTone: knTone,
+                    displacement: displacement,
+                    depExcavation: depExcavation,
+                    zeroRead: zeroRead,
+                    instrument: instrument,
+                    tenDesign: tenDesign
+                };
+            }
+        } else if (selectedInsType === 'D') {
+            InsType = {
+                logger: logger,
+                displacement: displacement,
+                depExcavation: depExcavation
+            };
+        } else if (selectedInsType === 'F') {
+            InsType = {
+                displacement: displacement,
+                depExcavation: depExcavation
+            };
+        } else if (selectedInsType === 'E') {
+            InsType = {
+                aPlus: aPlus,
+                aMinus: aMinus,
+                bPlus: bPlus,
+                bMinus: bMinus,
+                depExcavation: depExcavation
+            };
+        }
+
         if (!selectedInsType || !insNum || !createDate || !insLocation || !verticalPlus || !verticalMinus) {
             alert("모든 필드를 입력해주세요.");
             return;
@@ -130,19 +186,22 @@ function InstrumentCreateModal(props) {
 
         try {
             const res = await axios.post(`http://localhost:8080/MeausrePro/Instrument/save`, {
-                sectionId: section,
-                insType: selectedInsType,
-                insNum: insNum,
-                insName: insName,
-                insNo: insNo,
-                insGeometry: wkt,
-                createDate: createDate,
-                insLocation: insLocation,
-                measurement1: measurement1,
-                measurement2: measurement2,
-                measurement3: measurement3,
-                verticalPlus: verticalPlus,
-                verticalMinus: verticalMinus
+                instrument: {
+                    sectionId: section,
+                    insType: selectedInsType,
+                    insNum: insNum,
+                    insName: insName,
+                    insNo: insNo,
+                    insGeometry: wkt,
+                    createDate: createDate,
+                    insLocation: insLocation,
+                    measurement1: measurement1,
+                    measurement2: measurement2,
+                    measurement3: measurement3,
+                    verticalPlus: verticalPlus,
+                    verticalMinus: verticalMinus
+                },
+                insType: InsType
             });
 
             if (res.data) {

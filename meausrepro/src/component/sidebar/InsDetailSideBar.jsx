@@ -23,6 +23,24 @@ function InsDetailSideBar(props) {
     const [verticalPlus, setVerticalPlus] = useState(instrument?.verticalPlus || 0);
     const [verticalMinus, setVerticalMinus] = useState(instrument?.verticalMinus || 0);
 
+    const [insTypeName, setInsTypeName] = useState('');
+    useEffect(() => {
+        switch (insType){
+            case 'A': setInsTypeName('하중계 버팀대');
+                break;
+            case 'B': setInsTypeName('하중계 PSBEAM');
+                break;
+            case 'C': setInsTypeName('하중계 앵커');
+                break;
+            case 'D': setInsTypeName('변형률계');
+                break;
+            case 'E': setInsTypeName('구조물 기울기계');
+                break;
+            case 'F': setInsTypeName('균열측정계');
+                break;
+        }
+    }, [insType])
+
     const parseGeometryData = (data) => {
         if (!data || !data.startsWith('POINT(')) {
             return '정보 없음';
@@ -109,7 +127,7 @@ function InsDetailSideBar(props) {
     };
 
     return (
-        <div className={`insDetailSideBar ${isOpen ? 'open' : ''}`}>
+        <div className={`sectionDetailSideBar ${isOpen ? 'open' : ''}`}>
             <div className={'sideBarHeader'}>
                 <span className={'fw-bold sectionSideBarTitle'}>계측기 상세 정보</span>
                 <div className={'d-flex gap-2'}>
@@ -180,51 +198,52 @@ function InsDetailSideBar(props) {
                                 />
                             </div>
                         </div>
-                        <div className={'row'}>
-                            <div className={'col-sm d-flex flex-column gap-1'}>
-                                <span className={'text-muted small'}>시리얼 NO</span>
-                                <input
-                                    type={'text'}
-                                    className={'form-control'}
-                                    value={insNo}
-                                    onChange={(e) => setInsNo(e.target.value)}
-                                />
-                            </div>
-                            <div className={'col-sm d-flex flex-column gap-1'}>
-                                <span className={'text-muted small'}>계측기 종류</span>
-                                <input
-                                    type={'text'}
-                                    className={'form-control'}
-                                    value={insType}
-                                    onChange={(e) => setInsType(e.target.value)}
-                                />
-                            </div>
+                        <div className={'d-flex flex-column gap-1'}>
+                            <span className={'text-muted small'}>시리얼 NO</span>
+                            <input
+                                type={'text'}
+                                className={'form-control'}
+                                value={insNo}
+                                onChange={(e) => setInsNo(e.target.value)}
+                            />
+                        </div>
+                        <div className={'d-flex flex-column gap-1'}>
+                            <span className={'text-muted small'}>계측기 종류</span>
+                            <input
+                                type={'text'}
+                                className={'form-control'}
+                                value={insTypeName}
+                                readOnly
+                            />
+                        </div>
+                        <div className={'d-flex flex-column gap-1'}>
+                            <span className={'text-muted small'}>설치 위치</span>
+                            <input
+                                type={'text'}
+                                className={'form-control'}
+                                value={insLocation}
+                                onChange={(e) => setInsLocation(e.target.value)}
+                            />
+                        </div>
+                        <div className={'d-flex flex-column gap-1'}>
+                            <span className={'text-muted small'}>설치일자</span>
+                            <input
+                                type={'date'}
+                                className={'form-control'}
+                                value={createDate}
+                                onChange={(e) => setCreateDate(e.target.value)}
+                            />
+                        </div>
+                        <div className={'d-flex flex-column gap-1'}>
+                            <span className={'text-muted small'}>지오메트리 정보</span>
+                            <input
+                                type={'text'}
+                                className={'form-control'}
+                                value={parseGeometryData(instrument?.insGeometry)}
+                                readOnly
+                            />
                         </div>
                         <div className={'row'}>
-                            <div className={'col-sm d-flex flex-column gap-1'}>
-                                <span className={'text-muted small'}>설치 위치</span>
-                                <input
-                                    type={'text'}
-                                    className={'form-control'}
-                                    value={insLocation}
-                                    onChange={(e) => setInsLocation(e.target.value)}
-                                />
-                            </div>
-                            <div className={'col-sm d-flex flex-column gap-1'}>
-                                <span className={'text-muted small'}>설치일자</span>
-                                <input
-                                    type={'date'}
-                                    className={'form-control'}
-                                    value={createDate}
-                                    onChange={(e) => setCreateDate(e.target.value)}
-                                />
-                            </div>
-                        </div>
-                        <div className={'row'}>
-                            <div className={'col-sm d-flex flex-column gap-1'}>
-                                <span className={'text-muted small'}>지오메트리 정보</span>
-                                <span>{parseGeometryData(instrument?.insGeometry)}</span>
-                            </div>
                             <div className={'col-sm d-flex flex-column gap-1'}>
                                 <span className={'text-muted small'}>관리기준치1차</span>
                                 <input
@@ -243,15 +262,15 @@ function InsDetailSideBar(props) {
                                     onChange={(e) => setMeasurement2(e.target.value)}
                                 />
                             </div>
-                            <div className={'col-sm d-flex flex-column gap-1'}>
-                                <span className={'text-muted small'}>관리기준치3차</span>
-                                <input
-                                    type={'number'}
-                                    className={'form-control'}
-                                    value={measurement3}
-                                    onChange={(e) => setMeasurement3(e.target.value)}
-                                />
-                            </div>
+                        </div>
+                        <div className={'d-flex flex-column gap-1'}>
+                            <span className={'text-muted small'}>관리기준치3차</span>
+                            <input
+                                type={'number'}
+                                className={'form-control'}
+                                value={measurement3}
+                                onChange={(e) => setMeasurement3(e.target.value)}
+                            />
                         </div>
                         <div className={'row'}>
                             <div className={'col-sm d-flex flex-column gap-1'}>
@@ -283,7 +302,7 @@ function InsDetailSideBar(props) {
                         <span className={'text-muted small'}>시리얼 NO</span>
                         <span>{instrument?.insNo}</span>
                         <span className={'text-muted small'}>계측기 종류</span>
-                        <span>{instrument?.insType}</span>
+                        <span>{insTypeName}</span>
                         <span className={'text-muted small'}>설치 위치</span>
                         <span>{instrument?.insLocation}</span>
                         <span className={'text-muted small'}>설치일자</span>

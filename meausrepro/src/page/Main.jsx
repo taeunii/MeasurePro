@@ -199,7 +199,7 @@ function Main() {
         } else {
             // 마커 생성 모드로 진입
             setIsDrawingEnabledMarker(true);
-            setIsInsBtnText('계측기 추가');
+            setIsInsBtnText('계측기 취소');
 
             // 구간 클릭 및 계측기 리스트 호출
             handleSectionClick(section);

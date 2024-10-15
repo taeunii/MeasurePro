@@ -26,4 +26,9 @@ public class CompanyService {
     public List<MeausreProCompany> getAllCompany() {
         return companyRepository.findAll();
     }
+
+    // idx 값으로 정보 찾기
+    public MeausreProCompany getIdx(int idx) {
+        return companyRepository.findByIdx(idx);
+    }
 }

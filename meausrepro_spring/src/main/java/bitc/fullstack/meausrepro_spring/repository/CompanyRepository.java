@@ -10,4 +10,8 @@ public interface CompanyRepository extends JpaRepository<MeausreProCompany, Stri
     // 삭제되지 않은 작업그룹 전체보기
     @Query("SELECT c FROM MeausreProCompany c WHERE c.companyIng = 'Y'")
     List<MeausreProCompany> findAllByNotDelete();
+
+    // idx 값으로 정보 찾기
+    @Query("SELECT c FROM MeausreProCompany c WHERE c.idx = :idx")
+    MeausreProCompany findByIdx(int idx);
 }
