@@ -15,6 +15,9 @@ public class InstrumentService {
     @Autowired
     private InstrumentRepository instrumentRepository;
 
+    @Autowired
+    private InstrumentTypeService instrumentTypeService;
+
     // 저장
     public MeausreProInstrument save(MeausreProInstrument instrument) {
         // 저장된 계측기 데이터 반환
@@ -79,8 +82,18 @@ public class InstrumentService {
         }
     }
 
-    // 계측기 삭제
+    // 계측기 삭제 (계측기 추가 정보도 함께 삭제)
+    public void deleteInstrumentBySection(int sectionId) {
+        List<MeausreProInstrument> instruments = instrumentRepository.findAllBySectionId(sectionId);
+
+        for (MeausreProInstrument instrument : instruments) {
+            instrumentTypeService.deleteByInsId(instrument.getIdx()); // 계측기 추가 정보 삭제
+            instrumentRepository.deleteById(String.valueOf(instrument.getIdx())); // 계측기 삭제
+        }
+    }
+
     public void deleteById(int idx) {
-        instrumentRepository.deleteById(String.valueOf(idx)); // idx를 String으로 변환하여 삭제
+        instrumentTypeService.deleteByInsId(idx); // 계측기 추가 정보 삭제
+        instrumentRepository.deleteById(String.valueOf(idx)); // 계측기 삭제
     }
 }

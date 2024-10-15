@@ -2,6 +2,7 @@ package bitc.fullstack.meausrepro_spring.service;
 
 import bitc.fullstack.meausrepro_spring.dto.GeometryDto;
 import bitc.fullstack.meausrepro_spring.model.MeausreProProject;
+import bitc.fullstack.meausrepro_spring.model.MeausreProSection;
 import bitc.fullstack.meausrepro_spring.repository.ProjectRepository;
 import bitc.fullstack.meausrepro_spring.repository.SectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class ProjectService {
     private ProjectRepository projectRepository;
     @Autowired
     private SectionRepository sectionRepository;
+
+    @Autowired
+    private SectionService sectionService;
 
     // 저장
     public ResponseEntity<String> save(MeausreProProject project) {
@@ -66,8 +70,15 @@ public class ProjectService {
         Optional<MeausreProProject> projectOptional = projectRepository.findByIdx(idx);
         if (projectOptional.isPresent()) {
             MeausreProProject project =projectOptional.get();
-            // 프로젝트 id 참조하는 구간 삭제
-            sectionRepository.deleteByProjectId(project.getIdx());
+
+            // 프로젝트 속한 모든 구간 삭제
+            List<MeausreProSection> sections = sectionRepository.findAllByProjectId(project.getIdx());
+            for (MeausreProSection section : sections) {
+                sectionService.deleteSection(section.getIdx());
+            }
+
+            // 프로젝트 삭제
+
             projectRepository.delete(project);
             return ResponseEntity.ok("프로젝트 삭제 성공");
         } else {

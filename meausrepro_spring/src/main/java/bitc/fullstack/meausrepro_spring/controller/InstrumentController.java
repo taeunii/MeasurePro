@@ -101,7 +101,6 @@ public class InstrumentController {
     public ResponseEntity<String> deleteInstrument(@PathVariable("idx") int idx) {
         Optional<MeausreProInstrument> instrument = instrumentService.findById(idx);
         if (instrument.isPresent()) {
-            instrumentTypeService.deleteByInsId(idx); // 관련 정보 먼저 삭제
             instrumentService.deleteById(idx); // 계측기 삭제
             return ResponseEntity.ok("계측기 삭제 성공");
         } else {
