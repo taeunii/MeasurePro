@@ -53,8 +53,8 @@ function MainSideBar(props) {
     const handleSectionUpdated = (updatedSection) => {
         setSelectedSection(updatedSection); // 선택된 구간 정보 업데이트
         if (isSelectProject) {
-            // 선택된 프로젝트의 구간 목록을 다시 가져오기 위해 Main의 함수 사용
-            setSectionList(prev => [...prev]); // 단순히 리스트를 리셋해서 다시 렌더링하게 함
+            setSectionList(prevList => prevList.map(section =>
+            section.idx === updatedSection.idx ? updatedSection : section))
         }
     };
 
