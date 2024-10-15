@@ -1,7 +1,9 @@
 package bitc.fullstack.meausrepro_spring.service;
 
+import bitc.fullstack.meausrepro_spring.model.MeausreProInsType;
 import bitc.fullstack.meausrepro_spring.model.MeausreProInstrument;
 import bitc.fullstack.meausrepro_spring.repository.InstrumentRepository;
+import bitc.fullstack.meausrepro_spring.repository.InstrumentTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +25,6 @@ public class InstrumentService {
         // 저장된 계측기 데이터 반환
         return instrumentRepository.save(instrument);
     }
-
 
     // 특정 구간 계측기 보기
     public List<MeausreProInstrument> sectionInstruments(int sectionId) {
@@ -50,7 +51,7 @@ public class InstrumentService {
 
     // 특정 계측기 찾기
     public Optional<MeausreProInstrument> findById(int idx) {
-        return instrumentRepository.findByIdx(idx);
+        return instrumentRepository.findByIdx(idx); // idx를 int로 전달
     }
 
     // 계측기 수정 (지오메트리 정보, 구간 번호, 계측기 번호는 수정 불가)
@@ -92,6 +93,12 @@ public class InstrumentService {
         }
     }
 
+    // 계측기 추가정보 불러오기
+    public List<MeausreProInsType> getInstrumentTypeDetails(int instrumentId) {
+        return instrumentTypeService.findByInstrumentId(instrumentId);
+    }
+
+    // 계측기 삭제 (계측기 추가 정보도 함께 삭제)
     public void deleteById(int idx) {
         instrumentTypeService.deleteByInsId(idx); // 계측기 추가 정보 삭제
         instrumentRepository.deleteById(String.valueOf(idx)); // 계측기 삭제

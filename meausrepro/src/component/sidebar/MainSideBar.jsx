@@ -106,7 +106,17 @@ function MainSideBar(props) {
 
     // 계측기 선택 시 상세 정보 열기
     const handleSelectInstrument = (instrument) => {
-        setSelectedInstrument(instrument); // 계측기 상세 정보 열기
+        axios.get(`http://localhost:8080/MeausrePro/Instrument/details/${instrument.idx}`)
+            .then(response => {
+                if (response.data.length > 0) {
+                    const additionalInfo = response.data[0]; // 첫 번째 요소 선택
+                    const detailedInstrument = { ...instrument, ...additionalInfo }; // 병합
+                    setSelectedInstrument(detailedInstrument); // 상세 정보 설정
+                }
+            })
+            .catch(err => {
+                console.error("계측기 상세 정보 조회 중 오류 발생:", err);
+            });
         // 구간 상세 정보는 닫고 리스트는 유지
         setSelectedSection(selectedSection); // 구간 리스트는 유지, 상세 정보는 닫힘
     };
@@ -136,13 +146,13 @@ function MainSideBar(props) {
 
     // 계측기 삭제
     const deleteInstrument = (idx) => {
+        console.log("삭제할 계측기 idx:", idx); // 로그 추가
         axios.delete(`http://localhost:8080/MeausrePro/Instrument/delete/${idx}`)
-            .then((res) => {
-                console.log('계측기 삭제 성공:', res.data);
-                setInstrumentList(prevList => prevList.filter(instrument => instrument.idx !== idx))
+            .then((response) => {
+                console.log(response.data);
             })
-            .catch((err) => {
-                console.error('계측기 삭제 중 오류 발생:', err);
+            .catch((error) => {
+                console.error("계측기 삭제 중 오류 발생:", error);
             });
     };
 
