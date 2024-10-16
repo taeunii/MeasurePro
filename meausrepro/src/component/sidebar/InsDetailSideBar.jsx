@@ -133,6 +133,7 @@ function InsDetailSideBar(props) {
 
         axios.put('http://localhost:8080/MeausrePro/Instrument/update', data)
             .then((res) => {
+                console.log(res);
                 const updatedInstrument = {
                     ...instrument,
                     ...insData
