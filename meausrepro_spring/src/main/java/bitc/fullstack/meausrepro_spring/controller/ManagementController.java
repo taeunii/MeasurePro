@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,7 +53,7 @@ public class ManagementController {
     }
 
     @GetMapping("/details/{instrIdx}")
-    public ResponseEntity<ManagementDTO> getManagementDetails(@PathVariable int instrIdx) {
+    public ResponseEntity<List<ManagementDTO>> getManagementDetails(@PathVariable int instrIdx) {
         // 계측기 관련 관리 정보를 조회
         Optional<MeausreProInstrument> instrumentOpt = instrumentService.findById(instrIdx);
 
@@ -65,25 +66,31 @@ public class ManagementController {
         // 관리 정보 조회
         List<MeausreProManagement> managementList = managementService.findByInstrument(instrIdx);
 
-        // 첫 번째 관리 정보만 가져오는 예시
         if (managementList.isEmpty()) {
             return ResponseEntity.notFound().build(); // 관리 정보가 없으면 404 반환
         }
 
-        MeausreProManagement management = managementList.get(0);
-        Optional<MeausreProManType> manTypeOpt = manTypeService.findByMaIdx(management.getIdx());
+        // 모든 관리 정보를 조회하여 DTO 리스트로 변환
+        List<ManagementDTO> managementDTOList = new ArrayList<>();
 
-        if (!manTypeOpt.isPresent()) {
-            return ResponseEntity.notFound().build(); // 추가 정보가 없으면 404 반환
+        for (MeausreProManagement management : managementList) {
+            Optional<MeausreProManType> manTypeOpt = manTypeService.findByMaIdx(management.getIdx());
+
+            if (!manTypeOpt.isPresent()) {
+                continue; // 추가 정보가 없으면 무시하고 다음으로 넘어감
+            }
+
+            MeausreProManType manType = manTypeOpt.get();
+
+            // DTO에 정보를 설정
+            ManagementDTO dto = new ManagementDTO();
+            dto.setManagement(management);
+            dto.setManagementType(manType);
+
+            // 리스트에 추가
+            managementDTOList.add(dto);
         }
 
-        MeausreProManType manType = manTypeOpt.get();
-
-        // DTO에 정보를 설정
-        ManagementDTO dto = new ManagementDTO();
-        dto.setManagement(management);
-        dto.setManagementType(manType);
-
-        return ResponseEntity.ok(dto); // 관리 정보와 추가 정보 반환
+        return ResponseEntity.ok(managementDTOList); // 관리 정보 리스트 반환
     }
 }

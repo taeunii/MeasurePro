@@ -8,8 +8,8 @@ const InsPage = () => {
     const { id } = useParams(); // url에서 계측기 id 가져옴
     const { user } = useContext(UserContext);
     const [instrument, setInstrument] = useState(null);
-    const [measurements, setMeasurements] = useState(null); // 측정 데이터 상태 추가
-    const [managementType, setManagementType] = useState(null); // 측정 데이터 추가 값
+    const [measurements, setMeasurements] = useState([]); // 측정 데이터 상태 추가
+    const [managementTypes, setManagementTypes] = useState([]); // 측정 데이터 추가 값
 
     useEffect(() => {
         // 계측기 정보 가져오기
@@ -31,9 +31,9 @@ const InsPage = () => {
         axios.get(`http://localhost:8080/MeausrePro/Management/details/${id}`)
             .then(response => {
                 console.log("측정 데이터 응답:", response.data);
-                if (response.data && response.data.management) {
-                    setMeasurements(response.data.management); // 관리 정보를 상태에 설정
-                    setManagementType(response.data.managementType);
+                if (response.data.length > 0) {
+                    setMeasurements(response.data.map(item => item.management)); // 관리 정보를 리스트로 상태에 설정
+                    setManagementTypes(response.data.map(item => item.managementType)); // 추가 정보도 리스트로 설정
                 }
             })
             .catch(err => {
@@ -144,66 +144,36 @@ const InsPage = () => {
 
                     <h3>측정 데이터</h3>
                     <table className='table table-bordered'>
-                        <tbody>
+                        <thead>
                         <tr>
                             <th>측정일</th>
-                            <td>{measurements ? measurements.createDate || '정보 없음' : '정보 없음'}</td>
+                            <th>Gage1</th>
+                            {instrument.instrId?.insType !== 'D' && <th>Gage2</th>}
+                            {instrument.instrId?.insType !== 'D' && <th>Gage3</th>}
+                            {instrument.instrId?.insType === 'E' && <th>Gage4</th>}
+                            {instrument.instrId?.insType === 'F' && <th>Crack Width</th>}
                         </tr>
-                        {/* 추가 측정 데이터 표시 */}
-                        {(instrument.instrId?.insType === 'A' || instrument.instrId?.insType === 'B' || instrument.instrId?.insType === 'C') && managementType && (
-                            <>
-                                <tr>
-                                    <th>Gage1</th>
-                                    <td>{managementType.gage1}</td>
+                        </thead>
+                        <tbody>
+                        {measurements && measurements.length > 0 ? (
+                            measurements.map((measurement, index) => (
+                                <tr key={index}>
+                                    <td>{measurement.createDate}</td>
+                                    <td>{managementTypes[index]?.gage1}</td>
+                                    {instrument.instrId?.insType !== 'D' &&
+                                        <td>{managementTypes[index]?.gage2}</td>}
+                                    {instrument.instrId?.insType !== 'D' &&
+                                        <td>{managementTypes[index]?.gage3}</td>}
+                                    {instrument.instrId?.insType === 'E' &&
+                                        <td>{managementTypes[index]?.gage4}</td>}
+                                    {instrument.instrId?.insType === 'F' &&
+                                        <td>{measurement.crackWidth}</td>}
                                 </tr>
-                                <tr>
-                                    <th>Gage2</th>
-                                    <td>{managementType.gage2}</td>
-                                </tr>
-                                <tr>
-                                    <th>Gage3</th>
-                                    <td>{managementType.gage3 }</td>
-                                </tr>
-
-                            </>
-                        )}
-                        {(instrument.instrId?.insType === 'D' ) && managementType && (
-                                <tr>
-                                    <th>Gage1</th>
-                                    <td>{managementType.gage1}</td>
-                                </tr>
-                        )}
-                        {(instrument.instrId?.insType === 'E') && managementType && (
-                            <>
-                                <tr>
-                                    <th>Gage1</th>
-                                    <td>{managementType.gage1}</td>
-                                </tr>
-                                <tr>
-                                    <th>Gage2</th>
-                                    <td>{managementType.gage2}</td>
-                                </tr>
-                                <tr>
-                                    <th>Gage3</th>
-                                    <td>{managementType.gage3}</td>
-                                </tr>
-                                <tr>
-                                    <th>Gage4</th>
-                                    <td>{managementType.gage4}</td>
-                                </tr>
-                            </>
-                        )}
-                        {(instrument.instrId?.insType === 'F') && managementType && (
-                            <>
-                                <tr>
-                                    <th>Crack Width</th>
-                                    <td>{measurements.crackWidth || '정보 없음'}</td>
-                                </tr>
-                                <tr>
-                                    <th>Gage1</th>
-                                    <td>{managementType.gage1}</td>
-                                </tr>
-                            </>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="5">측정 데이터가 없습니다.</td>
+                            </tr>
                         )}
                         </tbody>
                     </table>
