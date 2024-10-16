@@ -260,15 +260,9 @@ function SectionDetailSideBar(props) {
                             <span className={'col-sm'}>{section.underStr}</span>
                         </div>
                         <hr/>
-                        <span className={'fw-bold sectionSideBarText my-2'}>
-                            출력
-                        </span>
-                        <span className={'text-muted small'}>
-                            QR코드
-                        </span>
                         <button
                             type={'button'}
-                            className={'qrBtn btn'}
+                            className={'btn qrBtn'}
                             onClick={() => printJS({
                                 printable: 'printArea',
                                 type: 'html',

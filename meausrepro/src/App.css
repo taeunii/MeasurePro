@@ -27,16 +27,17 @@ body {
 .signUpBtn,
 .greenBtn,
 .backGreenBtn:hover{
-  background-color: #aae0af;
-  border: 1px solid #aae0af;
+  background-color: #96C885FF;
+  border: 1px solid #96C885FF;
   color: white;
 }
+
 .signUpBtn:hover
 .backGreenBtn,
 .greenBtn:hover {
   background-color: transparent;
-  border: 1px solid #aae0af;
-  color: #aae0af;
+  border: 1px solid #96C885FF;
+  color: #96C885FF;
 }
 /* header */
 .header {
@@ -140,25 +141,25 @@ body {
   padding: 1em;
   align-items: center;
   text-decoration: none;
-  color: #aae0af;
+  color: #88bf8c;
   transition: all 0.4s ease;
 }
 .customSideBarLink.active {
-  background-color: #92d2b3;
+  background-color: #96C885FF;
   color: white;
 }
 .customSideBarLink:hover {
-  background-color: #ade3c9;
+  background-color: #96C885FF;
   color: white;
 }
 .customSideBarBtn {
-  border: 1px solid #aae0af;
+  border: 1px solid #96C885FF;
   background-color: transparent;
-  color: #aae0af;
+  color: #96C885FF;
   transition: all 0.3s ease;
 }
 .customSideBarBtn:hover {
-  background-color: #aae0af;
+  background-color: #96C885FF;
   color: white;
 }
 /* 드롭다운 기본 상태: 최대 높이 0 */
@@ -175,7 +176,7 @@ body {
   padding-left: 2rem;
 }
 .dpContent .customSideBarLink.active {
-  background-color: #cbe5d8;
+  background-color: #d1e8cb;
 }
 /* mainSideBar */
 .sideBarWrapper {
@@ -246,13 +247,13 @@ body {
 .projectItem.selected,
 .projectItem:hover,
 .projectBtn{
-  background-color: #a1e5c4;
+  background-color: #96C885FF;
   color: white;
 }
 .projectItem .insCreateBtn {
   border-radius: 1.2em;
-  border: 1px solid #7cc499;
-  background-color: #7cc499;
+  border: 1px solid #72ac5a;
+  background-color: #72ac5a;
   color: #ffffff;
   font-size: 0.7em;
   transition: all 0.5s ease;
@@ -260,8 +261,8 @@ body {
 }
 .projectItem:hover .insCreateBtn:hover,
 .projectItem.selected .insCreateBtn:hover{
-  border: 1px solid #5ca47a;
-  background-color: #5ca47a;
+  border: 1px solid #6a915e;
+  background-color: #6a915e;
   font-size: 0.7em;
 }
 .projectItem button,
@@ -276,13 +277,13 @@ body {
 .sideBarBtn:hover {
   color: #428866;
 }
-.projectBtn{
-  border: 1px solid #a1e5c4;
+.projectBtn {
+  border: 1px solid #96C885FF;
   transition: all 0.3s ease;
 }
 .projectBtn:hover {
-  border: 1px solid #87ccad;
-  background-color: #87ccad;
+  border: 1px solid #6a915e;
+  background-color: #79a369;
 }
 .projectDetail {
   display: flex;
@@ -320,15 +321,15 @@ body {
   gap: 0.5rem;
 }
 .managementBtn {
-  border: 1px solid #a3c2b2;
+  border: 1px solid #96C885FF;
   color: white;
-  background-color: #8ec5aa;
+  background-color: #8dc17d;
   transition: all 0.5s ease;
 }
 .managementBtn:hover {
-  border: 1px solid #8fbda2;
+  border: 1px solid #6a915e;
   color: white;
-  background-color: #8fbda2;
+  background-color: #6a915e;
 }
 .instrument-list {
   display: none;
@@ -359,4 +360,16 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.5em;
+}
+
+.qrBtn {
+  border: 1px solid #96C885FF;
+  color: #96C885FF;
+  transition: all 0.5s ease;
+}
+
+.qrBtn:hover {
+  border: 1px solid #96C885FF;
+  color: white;
+  background-color: #96C885FF;
 }
