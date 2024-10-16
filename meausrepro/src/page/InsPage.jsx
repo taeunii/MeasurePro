@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import axios from "axios";
 import UserContext from "../context/UserContext.jsx";
+import StackedLineChart from "../component/chart/StackedLineChart.jsx";
 
 const InsPage = () => {
     const { id } = useParams(); // url에서 계측기 id 가져옴
@@ -10,6 +11,16 @@ const InsPage = () => {
     const [instrument, setInstrument] = useState(null);
     const [measurements, setMeasurements] = useState([]); // 측정 데이터 상태 추가
     const [managementTypes, setManagementTypes] = useState([]); // 측정 데이터 추가 값
+
+    const chartData = measurements.map((measurement, index) => ({
+        date: measurement.createDate,
+        gage1: managementTypes[index]?.gage1 || 0,  // 값이 없으면 0
+        gage2: managementTypes[index]?.gage2 || 0,
+        gage3: managementTypes[index]?.gage3 || 0,
+        gage4: managementTypes[index]?.gage4 || 0,
+        crackWidth : managementTypes[index]?.crackWidth || 0,
+    }));
+
 
     useEffect(() => {
         // 계측기 정보 가져오기
@@ -45,7 +56,7 @@ const InsPage = () => {
         <div className='d-flex vh-100'>
             <CustomSidebar topManager={user.topManager} />
             {instrument ? (
-                <div>
+                <div className={'flex-grow-1'}>
                     <h2>{instrument.instrId?.insName || '계측기 이름이 없습니다.'} 상세 정보</h2>
                     <h3>기초 자료 정보</h3>
                     <table className='table table-bordered'>
@@ -141,6 +152,9 @@ const InsPage = () => {
                         )}
                         </tbody>
                     </table>
+
+                    {/* 차트 공간 */}
+                    <StackedLineChart data={chartData} instrumentType={instrument.instrId?.insType} />
 
                     <h3>측정 데이터</h3>
                     <table className='table table-bordered'>
