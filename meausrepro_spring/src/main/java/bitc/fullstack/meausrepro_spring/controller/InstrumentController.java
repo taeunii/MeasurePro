@@ -81,16 +81,15 @@ public class InstrumentController {
     @PutMapping("/update")
     public ResponseEntity<String> updateInstrument(@RequestBody InstrumenetDTO request) {
         MeausreProInstrument instrument = request.getInstrument();
-        MeausreProInsType insType = request.getInsType();
+        MeausreProInsType insType = request.getInsType(); // 추가 테이블 정보
 
         Optional<MeausreProInstrument> existingInstrumentOptional = instrumentService.findById(instrument.getIdx());
 
         if (existingInstrumentOptional.isPresent()) {
             MeausreProInstrument existingInstrument = existingInstrumentOptional.get();
 
-            // 수정 가능한 필드들만 업데이트
+            // 기본 테이블 업데이트
             existingInstrument.setInsName(instrument.getInsName());
-            existingInstrument.setInsType(instrument.getInsType());
             existingInstrument.setInsNum(instrument.getInsNum());
             existingInstrument.setInsNo(instrument.getInsNo());
             existingInstrument.setCreateDate(instrument.getCreateDate());
@@ -101,13 +100,35 @@ public class InstrumentController {
             existingInstrument.setVerticalPlus(instrument.getVerticalPlus());
             existingInstrument.setVerticalMinus(instrument.getVerticalMinus());
 
-            // 계측기 기본 정보 업데이트
+            // 기본 테이블 저장
             instrumentService.save(existingInstrument);
 
             // 추가 정보 업데이트
             if (insType != null) {
-                insType.setInstrId(existingInstrument);  // 계측기와 연결된 insType 설정
-                instrumentTypeService.save(insType);  // 추가 정보 저장
+                // 인스트루먼트 타입 조회
+                List<MeausreProInsType> insTypeList = instrumentTypeService.findByInstrumentId(existingInstrument.getIdx());
+                Optional<MeausreProInsType> existingInsTypeOptional = insTypeList.stream().findFirst();
+
+                if (existingInsTypeOptional.isPresent()) {
+                    MeausreProInsType existingInsType = existingInsTypeOptional.get();
+                    existingInsType.setLogger(insType.getLogger());
+                    existingInsType.setAPlus(insType.getAPlus());
+                    existingInsType.setAMinus(insType.getAMinus());
+                    existingInsType.setBPlus(insType.getBPlus());
+                    existingInsType.setBMinus(insType.getBMinus());
+                    existingInsType.setKnTone(insType.getKnTone());
+                    existingInsType.setDisplacement(insType.getDisplacement());
+                    existingInsType.setDepExcavation(insType.getDepExcavation());
+                    existingInsType.setZeroRead(insType.getZeroRead());
+                    existingInsType.setTenAllowable(insType.getTenAllowable());
+                    existingInsType.setTenDesign(insType.getTenDesign());
+                    existingInsType.setInstrId(existingInstrument); // 관계 설정
+                    instrumentTypeService.save(existingInsType); // 업데이트 저장
+                } else {
+                    // 존재하지 않을 경우 새로 저장
+                    insType.setInstrId(existingInstrument); // 계측기와 연결된 insType 설정
+                    instrumentTypeService.save(insType);  // 추가 정보 저장
+                }
             }
 
             return ResponseEntity.ok("계측기 및 추가 정보가 성공적으로 업데이트되었습니다.");

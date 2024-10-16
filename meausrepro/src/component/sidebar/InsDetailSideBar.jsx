@@ -100,18 +100,33 @@ function InsDetailSideBar(props) {
 
     const saveChanges = () => {
         const data = {
-            idx: instrument.idx,
-            insName: insData.insName,
-            insType: insData.insType,  // 이름에서 코드로 변환
-            insLocation: insData.insLocation,
-            insNum: insData.insNum,
-            insNo: insData.insNo,
-            createDate: insData.createDate,
-            verticalPlus: insData.verticalPlus,
-            verticalMinus: insData.verticalMinus,
-            measurement1: insData.measurement1,
-            measurement2: insData.measurement2,
-            measurement3: insData.measurement3
+            instrument: {  // instrument 속성을 객체로 감쌈
+                idx: instrument.idx,
+                insName: insData.insName,
+                insLocation: insData.insLocation,
+                insNum: insData.insNum,
+                insNo: insData.insNo,
+                createDate: insData.createDate,
+                verticalPlus: insData.verticalPlus,
+                verticalMinus: insData.verticalMinus,
+                measurement1: insData.measurement1,
+                measurement2: insData.measurement2,
+                measurement3: insData.measurement3,
+                insType: instrument.insType
+            },
+            insType: {  // 추가 테이블 정보
+                logger: insData.logger,
+                aPlus: insData.aPlus,
+                aMinus: insData.aMinus,
+                bPlus: insData.bPlus,
+                bMinus: insData.bMinus,
+                knTone: insData.knTone,
+                displacement: insData.displacement,
+                depExcavation: insData.depExcavation,
+                zeroRead: insData.zeroRead,
+                tenAllowable: insData.tenAllowable,
+                tenDesign: insData.tenDesign
+            }
         };
 
         console.log("Sending data: ", data); // 전송 데이터 확인
@@ -126,7 +141,13 @@ function InsDetailSideBar(props) {
                 toggleEdit();  // 수정 모드 종료
             })
             .catch((err) => {
-                console.error("계측기 수정 중 오류 발생:", err);
+                if (err.response) {
+                    console.error("서버 응답 오류:", err.response.data); // 서버 응답의 문제일 경우
+                } else if (err.request) {
+                    console.error("요청 오류:", err.request); // 요청이 이루어졌으나 응답이 없을 경우
+                } else {
+                    console.error("계측기 수정 중 기타 오류 발생:", err.message); // 그 외의 오류 메시지
+                }
             });
     };
 
