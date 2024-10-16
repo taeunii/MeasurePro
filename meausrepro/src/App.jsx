@@ -5,6 +5,7 @@ import Login from "./page/Login.jsx";
 import {UserProvder} from "./context/UserContext.jsx";;
 import UserManagement from "./page/UserManagement.jsx";
 import GroupManagement from "./page/GroupManagement.jsx";
+import InsPage from "./page/InsPage.jsx";
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
                     <Route path={'/MeausrePro'} element={<Main />} />
                     <Route path={'/UserManagement'} element={<UserManagement />} />
                     <Route path={'/GroupManagement'} element={<GroupManagement />}/>
+                    <Route path={"/InsPage/:id"} element={<InsPage />} />
                 </Routes>
             </BrowserRouter>
         </UserProvder>

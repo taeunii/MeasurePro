@@ -9,6 +9,7 @@ import CustomSidebar from "../component/sidebar/CustomSidebar.jsx";
 import axios from "axios";
 import ProjectEditModal from "../component/modal/ProjectEditModal.jsx";
 import InstrumentCreateModal from "../component/modal/InstrumentCreateModal.jsx";
+import InsPage from "./InsPage.jsx";
 
 function Main() {
     const { user } = useContext(UserContext);

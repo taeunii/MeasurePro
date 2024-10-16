@@ -4,6 +4,7 @@ import axios from "axios";
 import SectionDetailSideBar from "./SectionDetailSideBar.jsx";
 import Swal from "sweetalert2";
 import InsDetailSideBar from "./InsDetailSideBar.jsx";
+import InsPage from "../../page/InsPage.jsx";
 
 function MainSideBar(props) {
     const {user} = useContext(UserContext);
