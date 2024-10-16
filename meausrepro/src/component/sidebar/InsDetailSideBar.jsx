@@ -88,6 +88,7 @@ function InsDetailSideBar(props) {
             measurement3
         })
             .then((res) => {
+                console.log(res);
                 const updatedInstrument = {
                     ...instrument,
                     insName,
