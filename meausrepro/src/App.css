@@ -305,6 +305,9 @@ body {
 .sectionSideBarTitle {
   font-size: 1.15rem;
 }
+.sectionSideBarText {
+  font-size: 1.1rem;
+}
 /* main */
 .mainSection {
   display: inline-block;
@@ -345,4 +348,15 @@ body {
   padding: 0.5em;
   font-size: 0.9em;
   cursor: pointer;
+}
+.qrBtn {
+  border: 1px solid #cbcbcb;
+  background-color: white;
+  color: black;
+  font-size: 0.9rem;
+  transition: all 0.5s ease;
+}
+.qrBtn:hover {
+  border: 1px solid #cbcbcb;
+  color: #669a6c;
 }

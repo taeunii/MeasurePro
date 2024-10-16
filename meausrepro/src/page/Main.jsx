@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import {useContext, useEffect, useState} from "react";
 import UserContext from "../context/UserContext.jsx";
 import { useNavigate } from "react-router";
 import MapComponent from "../component/MapComponent.jsx";
@@ -11,6 +11,7 @@ import ProjectEditModal from "../component/modal/ProjectEditModal.jsx";
 import InstrumentCreateModal from "../component/modal/InstrumentCreateModal.jsx";
 
 function Main() {
+
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
 
