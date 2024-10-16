@@ -41,6 +41,28 @@ public class UserController {
         }
     }
 
+    // 어플 전용
+    @PostMapping("/AppLogin")
+    public MeausreProUser Applogin(@RequestBody MeausreProUser loginUser) {
+        System.out.println("\n" + loginUser.getId() + "\n");
+        Optional<MeausreProUser> user = userService.findById(loginUser.getId());
+
+        if (user.isPresent()) {
+            if (Objects.equals(user.get().getRole(), "1")) {
+                if (user.get().getPass().equals(loginUser.getPass())) {
+                    return user.get();
+                }
+                else {
+                    throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+                }
+            } else {
+                throw new IllegalArgumentException("앱 관리자만 로그인 가능합니다.");
+            }
+        } else {
+            throw new IllegalArgumentException("사용자를 찾을 수 없습니다.");
+        }
+    }
+
     // 아이디 중복 확인
     @PostMapping("/checkId/{id}")
     public boolean checkId(@PathVariable String id) {

@@ -24,7 +24,6 @@ public class InstrumentService {
         return instrumentRepository.save(instrument);
     }
 
-
     // 특정 구간 계측기 보기
     public List<MeausreProInstrument> sectionInstruments(int sectionId) {
         return instrumentRepository.findAllBySectionId(sectionId);

@@ -47,6 +47,7 @@ public class InstrumentController {
     // 특정 구간 계측기 보기
     @GetMapping("/section/{sectionId}")
     public List<MeausreProInstrument> sectionInstruments(@PathVariable("sectionId") int sectionId) {
+        System.out.println("\n" + sectionId);
         return instrumentService.sectionInstruments(sectionId);
     }
 
@@ -105,6 +106,17 @@ public class InstrumentController {
             return ResponseEntity.ok("계측기 삭제 성공");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("계측기를 찾을 수 없습니다.");
+        }
+    }
+
+    // 계측기 정보
+    @GetMapping("/get/{idx}")
+    public Optional<MeausreProInstrument> getInsInfo(@PathVariable("idx") int idx) {
+        Optional<MeausreProInstrument> instrumentOptional = instrumentService.findById(idx);
+        if (instrumentOptional.isPresent()) {
+            return instrumentOptional;
+        } else {
+            return Optional.empty();
         }
     }
 }
