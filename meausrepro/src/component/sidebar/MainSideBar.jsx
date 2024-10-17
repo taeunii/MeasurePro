@@ -288,6 +288,9 @@ function MainSideBar(props) {
                     <div className={'sideBarHeader'}>
                         <span className={'fs-5 fw-bold'}>현장 리스트</span>
                     </div>
+                    <div className={'sideBarHeader'}>
+                        <input className={'form-control'}/>
+                    </div>
                     <div className={'sideBarContent'}>
                         <ul className={'sideBarProjectList'}>
                             {projectList.map((item) => (
@@ -323,6 +326,8 @@ function MainSideBar(props) {
                     handleInstrumentUpdated={handleInstrumentUpdated}
                     handleClose={() => setSelectedInstrument(null)} // 계측기 상세 정보 닫기
                     deleteInstrument={deleteInstrument}  // 여기서 전달
+                    siteName={isSelectProject.siteName}
+                    sectionName={selectedSection.sectionName}
                 />
             )}
         </div>

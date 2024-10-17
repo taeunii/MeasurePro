@@ -47,7 +47,7 @@ function SectionDetailSideBar(props) {
         setIsOpen(true);
         // 계측기 번호 가져오기
         fetchInstrumentNumbers();
-    }, []);
+    }, [section]);
 
     const handleUpdateBtnClick = () => {
         if (!isUpdateBtn) {
@@ -286,6 +286,10 @@ function SectionDetailSideBar(props) {
             </div>
             <div className={'printSection'}>
                 <table className={'printTable'} id={'printArea'}>
+                    <colgroup>
+                        <col width={'50%'}/>
+                        <col width={'50%'}/>
+                    </colgroup>
                     <tbody>
                     {instrumentNumbers.map((instrument, index) => (
                         index % 2 === 0 && (
@@ -298,7 +302,7 @@ function SectionDetailSideBar(props) {
                                         <span className={'qrInfo'}>
                                                 {`${section.sectionName} 계측기 : ${instrumentNumbers[index].insNum}`}
                                         </span>
-                                        <QRCodeCanvas value={`Instrument Number: ${instrument.idx}`}/>
+                                        <QRCodeCanvas value={instrument.idx}/>
                                     </div>
                                 </td>
                                 {instrumentNumbers[index + 1] && (
@@ -311,7 +315,7 @@ function SectionDetailSideBar(props) {
                                                 {`${section.sectionName} 계측기 : ${instrumentNumbers[index + 1].insNum}`}
                                             </span>
                                             <QRCodeCanvas
-                                                value={`Instrument Number: ${instrumentNumbers[index + 1].idx}`}/>
+                                                value={instrumentNumbers[index + 1].idx}/>
                                         </div>
                                     </td>
                                 )}

@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import {Link, useLocation} from "react-router-dom";
+import printJS from "print-js";
+import {QRCodeCanvas} from "qrcode.react";
 
 function InsDetailSideBar(props) {
-    const { instrument, handleClose, deleteInstrument, handleInstrumentUpdated } = props;
+    const {instrument, handleClose, deleteInstrument, handleInstrumentUpdated, siteName, sectionName} = props;
     const [isOpen, setIsOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const location = useLocation();
@@ -54,13 +56,20 @@ function InsDetailSideBar(props) {
     // 계측기 타입 이름 가져오기
     const getInsTypeName = (type) => {
         switch (type) {
-            case 'A': return '하중계 버팀대';
-            case 'B': return '하중계 PSBEAM';
-            case 'C': return '하중계 앵커';
-            case 'D': return '변형률계';
-            case 'E': return '구조물 기울기계';
-            case 'F': return '균열측정계';
-            default: return '';
+            case 'A':
+                return '하중계 버팀대';
+            case 'B':
+                return '하중계 PSBEAM';
+            case 'C':
+                return '하중계 앵커';
+            case 'D':
+                return '변형률계';
+            case 'E':
+                return '구조물 기울기계';
+            case 'F':
+                return '균열측정계';
+            default:
+                return '';
         }
     };
 
@@ -78,7 +87,7 @@ function InsDetailSideBar(props) {
     };
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setInsData(prevData => ({
             ...prevData,
             [name]: value
@@ -179,19 +188,19 @@ function InsDetailSideBar(props) {
                     <Link
                         to={`/InsPage/${instrument.idx}`}
                         className={'text-decoration-none'}>
-                    <button
-                        type={'button'}
-                        className={`sideBarBtn ${location.pathname === `/InsPage/${instrument.idx}` ? 'active' : ''}`}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="gold"
-                             className="bi bi-clipboard-data" viewBox="0 0 16 16">
-                            <path
-                                d="M4 11a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0zm6-4a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0zM7 9a1 1 0 0 1 2 0v3a1 1 0 1 1-2 0z"/>
-                            <path
-                                d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z"/>
-                            <path
-                                d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z"/>
-                        </svg>
-                    </button>
+                        <button
+                            type={'button'}
+                            className={`sideBarBtn ${location.pathname === `/InsPage/${instrument.idx}` ? 'active' : ''}`}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="gold"
+                                 className="bi bi-clipboard-data" viewBox="0 0 16 16">
+                                <path
+                                    d="M4 11a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0zm6-4a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0zM7 9a1 1 0 0 1 2 0v3a1 1 0 1 1-2 0z"/>
+                                <path
+                                    d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z"/>
+                                <path
+                                    d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z"/>
+                            </svg>
+                        </button>
                     </Link>
                     <button
                         type={'button'}
@@ -579,6 +588,45 @@ function InsDetailSideBar(props) {
                         )}
                     </div>
                 )}
+            </div>
+            <div className={'projectDetail mt-2'}>
+                <button
+                    type={'button'}
+                    className={'btn qrBtn'}
+                    onClick={() => printJS({
+                        printable: 'printArea',
+                        type: 'html',
+                        css: ['/print.css'],
+                        targetStyles: ['*'],
+                        scanStyles: false,
+                    })}
+                >
+                    QR코드 출력
+                </button>
+            </div>
+            <div className={'printSection'}>
+                <table className={'printTable'} id={'printArea'}>
+                    <colgroup>
+                        <col width={'50%'}/>
+                        <col width={'50%'}/>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div className={'qrContainer'}>
+                                <span className={'qrTitle'}>
+                                    {siteName}
+                                </span>
+                                <span className={'qrInfo'}>
+                                    {`${sectionName} 계측기 : ${insData.insNum}`}
+                                </span>
+                                <QRCodeCanvas
+                                    value={insData.idx}/>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     );
