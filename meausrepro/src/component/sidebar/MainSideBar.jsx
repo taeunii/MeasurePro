@@ -4,7 +4,6 @@ import axios from "axios";
 import SectionDetailSideBar from "./SectionDetailSideBar.jsx";
 import Swal from "sweetalert2";
 import InsDetailSideBar from "./InsDetailSideBar.jsx";
-import InsPage from "../../page/InsPage.jsx";
 
 function MainSideBar(props) {
     const {user} = useContext(UserContext);
@@ -287,9 +286,6 @@ function MainSideBar(props) {
                 <div className={'sideBar'}>
                     <div className={'sideBarHeader'}>
                         <span className={'fs-5 fw-bold'}>현장 리스트</span>
-                    </div>
-                    <div className={'sideBarHeader'}>
-                        <input className={'form-control'}/>
                     </div>
                     <div className={'sideBarContent'}>
                         <ul className={'sideBarProjectList'}>
