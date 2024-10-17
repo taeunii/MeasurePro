@@ -3,6 +3,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import {QRCodeCanvas} from "qrcode.react";
 import printJS from "print-js";
+import {Link} from "react-router-dom";
 
 function SectionDetailSideBar(props) {
     const {section, handleSectionUpdated, handleClose, deleteSection} = props;
@@ -259,6 +260,12 @@ function SectionDetailSideBar(props) {
                             <span className={'text-muted small col-sm-5'}>주요관리대상물도로하부</span>
                             <span className={'col-sm'}>{section.underStr}</span>
                         </div>
+                        <hr/>
+                        <Link to={"/Report"}>
+                            <div>
+                                <button type={"button"} className={"btn rpBtn"}>종합분석지</button>
+                            </div>
+                        </Link>
                         <hr/>
                         <button
                             type={'button'}

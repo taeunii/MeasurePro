@@ -4,6 +4,7 @@ import {useNavigate} from "react-router";
 import axios from "axios";
 import CustomSidebar from "../component/sidebar/CustomSidebar.jsx";
 import CompanyModal from "../component/modal/CompanyModal.jsx";
+import Pagination from "../component/pagination/Pagination.jsx";
 
 function GroupManagement() {
     const { user } = useContext(UserContext);
@@ -22,6 +23,27 @@ function GroupManagement() {
     const closeCompanyModal = () => {
         setIsCompanyModal(false);
     }
+
+    // 현재 페이지 번호
+    const [page, setPage] = useState(1);
+    // 페이지 당 게시글 수
+    const itemsPerPage = 10;
+
+    // 페이지 이동
+    const changePageHandler = (page) => {
+        setPage(page);
+    };
+
+    // 페이지네이션을 통해 보여줄 slice된 리스트
+    const [currentList, setCurrentList] = useState(companyList);
+
+    const indexOfLastItem = page * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+    useEffect(() => {
+        setCurrentList(companyList.slice(indexOfFirstItem, indexOfLastItem));
+    }, [page, companyList]);
+
     // 로그인 정보 없을 시, 로그인 페이지로 이동
     useEffect(() => {
         if (!user.id) {
@@ -107,6 +129,14 @@ function GroupManagement() {
 
                                 </tbody>
                             </table>
+                            {companyList.length > 0 && (
+                                <Pagination
+                                    activePage={page}
+                                    itemsCountPerPage={itemsPerPage}
+                                    totalItemsCount={companyList.length}
+                                    onChange={changePageHandler}
+                                />
+                            )}
                         </div>
                         <CompanyModal
                             isOpen={isCompanyModal}
