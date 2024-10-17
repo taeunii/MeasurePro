@@ -396,6 +396,10 @@ body {
   font-size: 0.9em;
   cursor: pointer;
 }
+.report-list {
+  padding: 5px;
+  cursor: pointer;
+}
 .InsDetail {
   max-height: 500px;
   overflow: auto;
@@ -433,4 +437,25 @@ body {
   border: 1px solid #96C885FF;
   color: white;
   background-color: #96C885FF;
+}
+
+.rtBtn {
+  border: 1px solid #96C885FF;
+  background-color: #96C885FF;
+  color: white;
+  transition: all 0.5s ease;
+  width: 70px; /* 버튼의 너비 */
+  height: 30px; /* 버튼의 높이 */
+  padding: 5px 10px; /* 버튼 내부 여백 */
+  font-size: 12px; /* 버튼 글자 크기 */
+}
+
+.rtBtn:hover {
+  border: 1px solid #96C885FF;
+  color: #96C885FF;
+  background-color: white;
+}
+
+.file-select {
+  width: 160px;
 }

@@ -1,13 +1,17 @@
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import {QRCodeCanvas} from "qrcode.react";
 import printJS from "print-js";
 import {Link} from "react-router-dom";
+import UserContext from "../../context/UserContext.jsx";
 
 function SectionDetailSideBar(props) {
+    const { user } = useContext(UserContext);
     const {section, handleSectionUpdated, handleClose, deleteSection} = props;
     const [isOpen, setIsOpen] = useState(false);
+    const [reports, setReports] = useState([]); // 리포트 리스트 상태
+    const [selectedFile, setSelectedFile] = useState(null); // 파일 상태
 
     // 구간 수정
     const [sectionName, setSectionName] = useState(section.sectionName);
@@ -16,6 +20,81 @@ function SectionDetailSideBar(props) {
     const [groundStr, setGroundStr] = useState(section.groundStr);
     const [rearTarget, setRearTarget] = useState(section.rearTarget);
     const [underStr, setUnderStr] = useState(section.underStr);
+
+    // 파일 선택
+    const handleFileChange = (e) => {
+        setSelectedFile(e.target.files[0]);
+    };
+    // 파일 업로드
+    const handleFileUpload = () => {
+        if (!selectedFile) {
+            Swal.fire("파일을 선택해주세요.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        formData.append('sectionId', section.idx);
+        formData.append('userId', user.idx);
+
+        axios.post('http://localhost:8080/MeausrePro/report/upload', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+            .then(response => {
+                // 응답 객체에 message가 있을 경우
+                if (response.data && response.data.message) {
+                    Swal.fire("업로드 성공", response.data.message);
+                } else {
+                    Swal.fire("업로드 성공", "파일이 정상적으로 업로드되었습니다.");
+                }
+                fetchReports(); // 리포트 리스트 새로고침
+            })
+            .catch(error => {
+                // 오류 객체에 message가 있을 경우
+                if (error.response && error.response.data && error.response.data.message) {
+                    Swal.fire("업로드 실패", error.response.data.message);
+                } else {
+                    Swal.fire("업로드 실패", "파일 업로드 중 오류가 발생했습니다.");
+                }
+            });
+    };
+
+    // 리포트 리스트 불러오기
+    const fetchReports = () => {
+        axios.get(`http://localhost:8080/MeausrePro/report/reports/${section.idx}`)
+            .then(response => {
+                setReports(response.data);
+            })
+            .catch(error => {
+                console.error("리포트 불러오기 실패:", error);
+            });
+    }
+
+    // 리포트 다운로드
+    const handleDownload = (fileName) => {
+        axios.get(`http://localhost:8080/MeausrePro/report/download/${fileName}`, {
+            responseType: 'blob'  // 파일 다운로드 시 blob 형태로 받아옴
+        })
+            .then(response => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', fileName);  // 파일 다운로드
+                document.body.appendChild(link);
+                link.click();
+            })
+            .catch(error => {
+                console.error("파일 다운로드 실패:", error);
+            });
+    };
+
+    useEffect(() => {
+        setIsOpen(true);
+        fetchReports();  // 컴포넌트가 로드될 때 리포트 리스트 불러오기
+    }, [section]);
+
 
     // qr 출력
     const [instrumentNumbers, setInstrumentNumbers] = useState([])
@@ -281,6 +360,30 @@ function SectionDetailSideBar(props) {
                         >
                             {isLoading ? "로딩 중..." : "QR코드 일괄출력"}
                         </button>
+                        <div className='d-flex align-items-center'>
+                            {/* 파일 업로드 버튼 */}
+                            <input type="file" onChange={handleFileChange} className='form-control me-2 file-select'/>
+                            <button onClick={handleFileUpload} className={'btn rpBtn'}>업로드</button>
+                        </div>
+                        {/* 리포트 리스트 */}
+                        <div className='report-list'>
+                            {reports.length > 0 ? (
+                                reports.map(report => (
+                                    <div key={report.idx} className="card mb-2">
+                                        <div className="card-body d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 className="card-title mb-1">{report.fileName}</h6>
+                                                <p className="card-text mb-1">{report.userIdx?.name}</p> {/* 사용자 이름 표시 */}
+                                                <p className="card-text text-muted">{new Date(report.uploadDate).toLocaleDateString()}</p> {/* 업로드 날짜 표시 */}
+                                            </div>
+                                            <button onClick={() => handleDownload(report.fileName)} className='btn rtBtn'>다운로드</button>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <p>리포트가 없습니다.</p>
+                            )}
+                        </div>
                     </div>
                 )}
             </div>
