@@ -74,6 +74,29 @@ function UserManagement() {
             });
     };
 
+    // 회원정보 삭제
+    const handleDelete = (idx) => {
+        Swal.fire({
+            title: '회원정보 삭제',
+            text: "회원정보를 삭제하시겠습니까?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: '삭제',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`http://localhost:8080/MeausrePro/User/delete/${idx}`)
+                    .then(() => {
+                        setUserList(userList.filter((user) => user.idx !== idx));
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            }
+        });
+    };
+
+
     return (
         <div className={'d-flex vh-100'}>
             <CustomSidebar topManager={user.topManager} />
@@ -131,7 +154,7 @@ function UserManagement() {
                                                 </button>
                                             </td>
                                             <td>
-                                                <button type={'button'} className={'sideBarBtn projectDelete'}>
+                                                <button type={'button'} className={'sideBarBtn projectDelete'} onClick={() => handleDelete(item.idx)}>
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                          fill="currentColor"
                                                          className="bi bi-trash3" viewBox="0 0 16 16">

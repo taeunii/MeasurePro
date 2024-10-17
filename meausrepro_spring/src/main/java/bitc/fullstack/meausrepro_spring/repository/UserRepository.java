@@ -23,4 +23,8 @@ public interface UserRepository extends JpaRepository<MeausreProUser, String> {
     // 회원 정보 수정 시 필요
     @Query("SELECT u FROM MeausreProUser u WHERE u.idx = :idx")
     Optional<MeausreProUser> findByIdx(int idx);
+
+    // 특정 작업그룹 사용자 보기
+    @Query("SELECT u FROM MeausreProUser u WHERE u.companyIdx.idx = :companyIdx ORDER BY u.idx ASC")
+    List<MeausreProUser> findAllByCompanyIdx(int companyIdx);
 }

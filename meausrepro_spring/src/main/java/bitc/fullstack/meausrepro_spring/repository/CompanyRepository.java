@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CompanyRepository extends JpaRepository<MeausreProCompany, String> {
     // 삭제되지 않은 작업그룹 전체보기
@@ -13,5 +14,5 @@ public interface CompanyRepository extends JpaRepository<MeausreProCompany, Stri
 
     // idx 값으로 정보 찾기
     @Query("SELECT c FROM MeausreProCompany c WHERE c.idx = :idx")
-    MeausreProCompany findByIdx(int idx);
+    Optional<MeausreProCompany> findByIdx(int idx);
 }
