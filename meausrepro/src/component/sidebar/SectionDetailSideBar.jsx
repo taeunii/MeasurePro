@@ -5,6 +5,7 @@ import {QRCodeCanvas} from "qrcode.react";
 import printJS from "print-js";
 import UserContext from "../../context/UserContext.jsx";
 import {useNavigate} from "react-router";
+import {Link} from "react-router-dom";
 
 function SectionDetailSideBar(props) {
     const { user } = useContext(UserContext);
@@ -364,9 +365,11 @@ function SectionDetailSideBar(props) {
                         <span className={'projectInfoTitle mt-4'}>출력</span>
                     </div>
                     <div className={'projectInfoContent mt-3'}>
-                        <button type={'button'} onClick={PageMove} className={'whiteBtn'}>
+                        <Link to={`/CompAnalysis/${section.idx}`}>
+                        <button type={'button'} className={'whiteBtn2'}>
                             종합분석지
                         </button>
+                        </Link>
                         <button
                             type={'button'}
                             className={'whiteBtn mt-2'}

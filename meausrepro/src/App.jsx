@@ -7,6 +7,7 @@ import UserManagement from "./page/UserManagement.jsx";
 import GroupManagement from "./page/GroupManagement.jsx";
 import InsPage from "./page/InsPage.jsx";
 import Report from "./page/Report.jsx";
+import CompAnalysis from "./component/chart/CompAnalysis.jsx";
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                     <Route path={'/UserManagement'} element={<UserManagement />} />
                     <Route path={'/GroupManagement'} element={<GroupManagement />}/>
                     <Route path={"/InsPage/:id"} element={<InsPage />} />
+                    <Route path={"/CompAnalysis/:sectionId"} element={<CompAnalysis />} />
                 </Routes>
             </BrowserRouter>
         </UserProvder>

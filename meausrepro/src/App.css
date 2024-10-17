@@ -262,3 +262,20 @@ body {
   align-items: center;
   gap: 0.3rem;
 }
+
+/* 종합분석지 차트 */
+.comp-chart {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  grid-gap: 0px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.comp-name {
+  font-size: 12px;
+  margin-top: 10px;
+  font-weight: bold;
+  color: gray;
+  text-align: center;
+}
