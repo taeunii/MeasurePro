@@ -84,7 +84,6 @@ public class ProjectService {
             }
 
             // 프로젝트 삭제
-
             projectRepository.delete(project);
             return ResponseEntity.ok("프로젝트 삭제 성공");
         } else {

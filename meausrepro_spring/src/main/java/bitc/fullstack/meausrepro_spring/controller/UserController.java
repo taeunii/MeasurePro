@@ -27,26 +27,29 @@ public class UserController {
         Optional<MeausreProUser> user = userService.findById(loginUser.getId());
 
         if (user.isPresent()) {
-            if (Objects.equals(user.get().getRole(), "0")) {
-                if (user.get().getPass().equals(loginUser.getPass())) {
-                    // 작업그룹 상태 확인
-                    MeausreProCompany company = user.get().getCompanyIdx(); // 사용자의 소속 작업그룹 정보 가져오기
-                    if (company != null && company.getCompanyIng() == 'N') {
-                        throw new IllegalArgumentException("작업그룹이 비활성화된 상태입니다. 로그인할 수 없습니다.");
-                    }
-                    return user.get();
-                }
-                else {
-                    throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-                }
+            if (Objects.equals(user.get().getTopManager(), "1")) {
+                return user.get();
             } else {
-                throw new IllegalArgumentException("웹 관리자만 로그인 가능합니다.");
+                if (Objects.equals(user.get().getRole(), "0")) {
+                    if (user.get().getPass().equals(loginUser.getPass())) {
+                        // 작업그룹 상태 확인
+                        MeausreProCompany company = user.get().getCompanyIdx(); // 사용자의 소속 작업그룹 정보 가져오기
+                        if (company != null && company.getCompanyIng() == 'N') {
+                            throw new IllegalArgumentException("작업그룹이 비활성화된 상태입니다. 로그인할 수 없습니다.");
+                        }
+                        return user.get();
+                    }
+                    else {
+                        throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+                    }
+                } else {
+                    throw new IllegalArgumentException("웹 관리자만 로그인 가능합니다.");
+                }
             }
         } else {
             throw new IllegalArgumentException("사용자를 찾을 수 없습니다.");
         }
     }
-
 
     // 어플 전용
     @PostMapping("/AppLogin")

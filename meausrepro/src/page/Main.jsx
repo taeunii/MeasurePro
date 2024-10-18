@@ -40,8 +40,6 @@ function Main() {
     const [isSelectedSection, setIsSelectedSection] = useState(null);
     const [instrumentList, setInstrumentList] = useState([]);
 
-
-
     // 로그인 정보 없을 시, 로그인 페이지로 이동
     useEffect(() => {
         if (!user || !user.id) {

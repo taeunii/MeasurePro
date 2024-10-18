@@ -25,7 +25,7 @@ function Login() {
             return;
         }
 
-        axios.post(`http://localhost:8080/MeausrePro/User/login`, {
+        axios.post(`http://localhost:8080/MeausrePro/User/webLogin`, {
             idx: 1,
             id: id,
             pass: pass,
@@ -49,7 +49,7 @@ function Login() {
             .catch(err => {
                 Swal.fire({
                     icon: "warning",
-                    text: `${err.response.data.message}`,
+                    text: `${err}`,
                     showCancelButton: false,
                     confirmButtonText: '확인'
                 })
@@ -82,7 +82,7 @@ function Login() {
         .catch(err => {
             Swal.fire({
                 icon: "error",
-                text: `${err.response.data.message}`,
+                text: `${err}`,
                 showCancelButton: false,
                 confirmButtonText: '확인'
             })

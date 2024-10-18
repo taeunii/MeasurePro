@@ -1,10 +1,9 @@
-import {useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import {QRCodeCanvas} from "qrcode.react";
 import printJS from "print-js";
 import UserContext from "../../context/UserContext.jsx";
-import {useNavigate} from "react-router";
 import {Link} from "react-router-dom";
 
 function SectionDetailSideBar(props) {
@@ -13,6 +12,12 @@ function SectionDetailSideBar(props) {
     const [isOpen, setIsOpen] = useState(false);
     const [reports, setReports] = useState([]); // 리포트 리스트 상태
     const [selectedFile, setSelectedFile] = useState(null); // 파일 상태
+
+    // 이미지 파일 상태
+    const [selectedImgFile, setSelectedImgFile] = useState([]);
+    // 이미지 리스트
+    const [imageList, setImageList] = useState([]);
+    const descriptionInputRefs = useRef({});
 
     // 구간 수정
     const [sectionName, setSectionName] = useState(section.sectionName);
@@ -26,6 +31,7 @@ function SectionDetailSideBar(props) {
     const handleFileChange = (e) => {
         setSelectedFile(e.target.files[0]);
     };
+
     // 파일 업로드
     const handleFileUpload = () => {
         if (!selectedFile) {
@@ -91,11 +97,188 @@ function SectionDetailSideBar(props) {
             });
     };
 
-    useEffect(() => {
-        setIsOpen(true);
-        fetchReports();  // 컴포넌트가 로드될 때 리포트 리스트 불러오기
-    }, [section]);
+    // 이미지 선택
+    const handleImgFileSelect = (e) => {
+        const files = Array.from(e.target.files);
 
+        // 파일 정보 객체 형태 저장
+        const fileObjects = files.map(file => ({
+            file,
+            fileName: file.name,
+            imgDes: null
+        }))
+        setSelectedImgFile((prevFiles) => [...prevFiles, ...fileObjects]);
+
+        // 이미지 여러 장 업로드
+        fileObjects.forEach((fileObj) => {
+            handleSectionUpdateImg(fileObj.file);
+        });
+    }
+
+    // 사진 추가 버튼 클릭 이벤트
+    const handleAddImgClick = () => {
+        document.getElementById(`imgInput`).click();
+    };
+
+    // 이미지 다운
+    const handleImgDownload = async (img) => {
+        if(!img || !img.imgSrc) {
+            console.error("이미지 정보가 정의되지 않았습니다.");
+            return;
+        }
+
+        const imgName = img.imgSrc.substring(img.imgSrc.lastIndexOf('/') + 1);
+        const downloadUrl = img.imgSrc.toString();
+
+        try {
+            const response = await axios.get(downloadUrl, {
+                responseType: 'blob',
+            });
+
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+
+            // 다운로드 링크 생성
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = imgName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            // url 해제
+            window.url.revokeObjectURL(url);
+
+        } catch (e) {
+            console.log(e);
+            Swal.fire({
+                icon: "error",
+                text: `다운로드 중 오류가 발생했습니다.`,
+                showCancelButton: false,
+                confirmButtonText: '확인'
+            })
+        }
+    }
+
+    // 이미지 업로드
+    const handleSectionUpdateImg = (file) => {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const sectionId = section.idx;
+
+        // 이미지 업로드
+        axios.post(`http://localhost:8080/MeausrePro/Img/upload/${sectionId}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+            .then(response => {
+                // 이미지 업로드 성공 후, 응답으로 받은 이미지 URL을 사용
+                const uploadedImageUrl = response.data.imgSrc;
+                console.log('Image uploaded:', uploadedImageUrl);
+
+                // 이미지 목록에 새로 업로드된 이미지 추가
+                setImageList((prevImageList) => [
+                    ...prevImageList,
+                    { imgSrc: uploadedImageUrl, imgDes: '', idx: response.data.idx  } // 새 이미지 추가
+                ]);
+
+                setTimeout(() => {
+                    descriptionInputRefs.current[response.data.idx]?.focus();
+                }, 100);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
+    // 구간 이미지 리스트 불러오기
+    const sectionImgList = () => {
+        if (section) {
+            axios.get(`http://localhost:8080/MeausrePro/Img/section/${section.idx}`)
+                .then((res) => {
+                    setImageList(res.data); // 구간 목록 업데이트
+                })
+                .catch(err => {
+                    console.error('구간 이미지 업데이트 중 오류 발생:', err);
+                });
+        }
+    }
+
+    const getImgNameFromUrl = (url) => {
+        return url.substring(url.lastIndexOf('/') + 1);
+    }
+    // 이미지 설명 업데이트
+    const updateImgDescription = (imgDes, imgIdx) => {
+        return axios.put(`http://localhost:8080/MeausrePro/Img/update`, {
+            idx: imgIdx,
+            imgDes: imgDes
+        });
+    }
+    // 이미지 설명 관리
+    const handleImgDescriptionChange = (e, imgIdx) => {
+        const { value } = e.target;
+
+        setImageList((prevList) =>
+            prevList.map((image) =>
+                image.idx === imgIdx
+                    ? { ...image, imgDes: value } // 해당 이미지의 설명 업데이트
+                    : image
+            )
+        );
+    }
+
+    // 이미지 설명 업데이트 서버 전송
+    const handleImgDescriptionBlur = (imgDes, imgIdx) => {
+        updateImgDescription(imgDes, imgIdx)
+            .then((res) => {
+                console.log(res);
+                Swal.fire({
+                    icon:"success",
+                    text:"이미지 설명을 업데이트 했습니다!",
+                    showCancelButton:false,
+                    confirmButtonText:"확인"
+                })
+            })
+            .catch(err => {
+                console.log(err);
+
+                Swal.fire({
+                    icon:"error",
+                    text:"이미지 설명 업데이트 중 오류가 발생했습니다.",
+                    showCancelButton:false,
+                    confirmButtonText:"확인"
+                })
+            })
+    }
+
+    // 이미지 삭제
+    const handleImgDelete = (imgIdx) => {
+        Swal.fire({
+            title: '이미지 삭제',
+            text: '이미지를 삭제하시겠습니까?',
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: '삭제',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`http://localhost:8080/MeausrePro/Img/delete/${imgIdx}`)
+                    .then(() => {
+                        setImageList(prevList => prevList.filter(image => image.idx !== imgIdx));
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        Swal.fire({
+                            icon:"error",
+                            text:"이미지 삭제 중 오류가 발생했습니다.",
+                            showCancelButton:false,
+                            confirmButtonText:"확인"
+                        })
+                    });
+            }
+        })
+    }
 
     // qr 출력
     const [instrumentNumbers, setInstrumentNumbers] = useState([])
@@ -122,12 +305,6 @@ function SectionDetailSideBar(props) {
 
     // 수정 버튼 클릭 (클릭 전 값 = false)
     const [isUpdateBtn, setIsUpdateBtn] = useState(false);
-
-    useEffect(() => {
-        setIsOpen(true);
-        // 계측기 번호 가져오기
-        fetchInstrumentNumbers();
-    }, [section]);
 
     const handleUpdateBtnClick = () => {
         if (!isUpdateBtn) {
@@ -198,12 +375,29 @@ function SectionDetailSideBar(props) {
         });
     };
 
-    // 종합 분석지 이동
-    const navigate = useNavigate()
-    const PageMove = () => {
-        navigate('/Report')
-    }
+    useEffect(() => {
+        setTimeout(() => {
+            setIsOpen(true);
+        }, 300);
 
+        // setIsOpen(true);
+
+        fetchInstrumentNumbers();
+        sectionImgList();
+        fetchReports();  // 컴포넌트가 로드될 때 리포트 리스트 불러오기
+    }, [section]);
+
+    // 이미지 리스트 변화 생길때마다
+    useEffect(() => {
+        if (imageList.length > 0) {
+            const lastImg = imageList[imageList.length -1];
+            descriptionInputRefs.current[lastImg.idx]?.focus();
+
+            for (let i = 0; i < imageList.length; i++) {
+                console.log(imageList[i].imgSrc);
+            }
+        }
+    }, [imageList]);
 
     return (
         <div className={`sectionDetailSideBar ${isOpen ? 'open' : ''}`}>
@@ -247,11 +441,7 @@ function SectionDetailSideBar(props) {
                     <button
                         className={'sideBarCloseBtn iconBtn'}
                         onClick={handleCloseClick}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
-                             className="bi bi-x" viewBox="0 0 16 16">
-                            <path
-                                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
-                        </svg>
+                        X
                     </button>
                 </div>
             </div>
@@ -319,6 +509,86 @@ function SectionDetailSideBar(props) {
                             />
                         </div>
                     </div>
+                    <div className={'row mt-4 d-flex flex-column'}>
+                        <div className={'d-flex justify-content-between align-items-center'}>
+                            <span className={'projectInfoTitle'}>구간 이미지</span>
+                            <button
+                                type={'button'}
+                                className={'insCreateBtn'}
+                                onClick={handleAddImgClick}
+                            >
+                                이미지 추가
+                            </button>
+                        </div>
+                        <input
+                            type={'file'}
+                            id={'imgInput'}
+                            style={{display: 'none'}}
+                            accept={'image/*'}
+                            onChange={handleImgFileSelect}
+                            multiple
+                        />
+                        <div className={'mt-3'}>
+                            <table className={'table table-sm table-borderless border-0'}>
+                                <colgroup>
+                                    <col width={'40%'} />
+                                    <col width={'60%'} />
+                                </colgroup>
+                                <thead>
+                                <tr className={'border-bottom'}>
+                                    <th className={'small'}>파일명</th>
+                                    <th className={'small'}>이미지 설명</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {imageList.length === 0 ? (
+                                    <tr>
+                                        <td colSpan={2} className={'small'}>
+                                            저장된 이미지가 없습니다.
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    imageList.map((img, index) => {
+                                        return (
+                                            <tr key={index}>
+                                                <td>
+                                                    <input
+                                                        type={'text'}
+                                                        className={'form-control'}
+                                                        value={getImgNameFromUrl(img.imgSrc)}
+                                                        disabled
+                                                    />
+                                                </td>
+                                                <td className={'d-flex gap-1'}>
+                                                    <input
+                                                        ref={(el) => (descriptionInputRefs.current[img.idx] = el)}
+                                                        type={'text'}
+                                                        className={'form-control'}
+                                                        value={img.imgDes}
+                                                        onChange={(e) => handleImgDescriptionChange(e.target.value, img.idx)}
+                                                        onBlur={() => handleImgDescriptionBlur(img.imgDes, img.idx)}
+                                                        placeholder={'이미지 설명을 입력하세요.'}
+                                                    />
+                                                    <button
+                                                        className={'iconBtn iconBtnRed'}
+                                                        onClick={() => handleImgDelete(img.idx)}>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                             height="16"
+                                                             fill="currentColor" className="bi bi-trash3"
+                                                             viewBox="0 0 16 16">
+                                                            <path
+                                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                                        </svg>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        )
+                                    })
+                                )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             ) : (
                 <div className={'projectInfoSection'}>
@@ -366,9 +636,9 @@ function SectionDetailSideBar(props) {
                     </div>
                     <div className={'projectInfoContent mt-3'}>
                         <Link to={`/CompAnalysis/${section.idx}`}>
-                        <button type={'button'} className={'whiteBtn2'}>
-                            종합분석지
-                        </button>
+                            <button type={'button'} className={'whiteBtn2'}>
+                                종합분석지
+                            </button>
                         </Link>
                         <button
                             type={'button'}
@@ -384,32 +654,90 @@ function SectionDetailSideBar(props) {
                         >
                             {isLoading ? "로딩 중..." : "QR코드 일괄출력"}
                         </button>
-                        <div className='d-flex align-items-center'>
+                    </div>
+                    <div className={'projectInfoHeader'}>
+                        <span className={'projectInfoTitle mt-2'}>리포트</span>
+                    </div>
+                    <div className={'projectInfoContent'}>
+                        <div className='d-flex flex-column mt-3'>
                             {/* 파일 업로드 버튼 */}
-                            <input type="file" onChange={handleFileChange} className='form-control me-2 file-select'/>
-                            <button onClick={handleFileUpload} className={'btn rpBtn'}>업로드</button>
+                            <input type={'file'} onChange={handleFileChange} className={'form-control'}/>
+                            <div className={'d-grid justify-content-end mt-2'}>
+                                <button onClick={handleFileUpload} className={'reportUpBtn'}>
+                                    업로드
+                                </button>
+                            </div>
                         </div>
                         {/* 리포트 리스트 */}
-                        <div className='report-list'>
-                            {reports.length > 0 ? (
+                        <div className={'d-flex flex-column gap-2 mt-2'}>
+                            {reports.length > 0 && (
                                 reports.map(report => (
-                                    <div key={report.idx} className="card mb-2">
-                                        <div className="card-body d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <h6 className="card-title mb-1">{report.fileName}</h6>
-                                                <p className="card-text mb-1">{report.userIdx?.name}</p> {/* 사용자 이름 표시 */}
-                                                <p className="card-text text-muted">{new Date(report.uploadDate).toLocaleDateString()}</p> {/* 업로드 날짜 표시 */}
+                                    <div key={report.idx} className={'reportCard'}>
+                                        <div className={'d-flex justify-content-between align-items-center'}>
+                                            <div className={'d-flex flex-column gap-1'}>
+                                                <span className={'reportTitle'}>
+                                                    {report.fileName}
+                                                </span>
+                                                <span className={'reportUser'}>
+                                                    {report.userIdx?.name}
+                                                </span>
+                                                <span className={'reportDate'}>
+                                                    {new Date(report.uploadDate).toLocaleDateString()}
+                                                </span> {/* 업로드 날짜 표시 */}
                                             </div>
-                                            <button onClick={() => handleDownload(report.fileName)}
-                                                    className='btn rtBtn'>다운로드
+                                            <button
+                                                onClick={() => handleDownload(report.fileName)}
+                                                className={'iconBtn iconBtnGreen'}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                     fill="currentColor" className="bi bi-box-arrow-in-down"
+                                                     viewBox="0 0 16 16">
+                                                    <path fillRule="evenodd"
+                                                          d="M3.5 6a.5.5 0 0 0-.5.5v8a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-8a.5.5 0 0 0-.5-.5h-2a.5.5 0 0 1 0-1h2A1.5 1.5 0 0 1 14 6.5v8a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 14.5v-8A1.5 1.5 0 0 1 3.5 5h2a.5.5 0 0 1 0 1z"/>
+                                                    <path fillRule="evenodd"
+                                                          d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
+                                                </svg>
                                             </button>
                                         </div>
                                     </div>
                                 ))
-                            ) : (
-                                <p>리포트가 없습니다.</p>
                             )}
                         </div>
+                    </div>
+                    <div className={'projectInfoHeader'}>
+                        <span className={'projectInfoTitle mt-2'}>구간 이미지</span>
+                    </div>
+                    <div className={'projectInfoContent'}>
+                        {/* 이미지 리스트 */}
+                        <ul className={'list-unstyled mt-2 d-flex flex-column gap-2'}>
+                            {imageList.length > 0 && (
+                                imageList.map((img) => (
+                                    <li
+                                        key={img.idx}
+                                        className={'imgCard'}
+                                        onClick={() => handleImgDownload(img)}
+                                    >
+                                        <img
+                                            src={img.imgSrc}
+                                            alt={img.name}
+                                            className={'img-fluid'}
+                                            style={{
+                                                width: '50px',
+                                                height: '35px',
+                                                transition: 'transform 0.2s'
+                                            }}
+                                        />
+                                        <div className={'d-flex flex-column text-end gap-1'}>
+                                            <span className={'text-muted small'}>
+                                                {getImgNameFromUrl(img.imgSrc)}
+                                            </span>
+                                            <span className={'imgText'}>
+                                                {img.imgDes}
+                                            </span>
+                                        </div>
+                                    </li>
+                                ))
+                            )}
+                        </ul>
                     </div>
                 </div>
             )}

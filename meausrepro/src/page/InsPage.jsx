@@ -1,6 +1,6 @@
 import CustomSidebar from "../component/sidebar/CustomSidebar.jsx";
 import {useContext, useEffect, useState} from "react";
-import {useParams} from "react-router";
+import {useNavigate, useParams} from "react-router";
 import axios from "axios";
 import UserContext from "../context/UserContext.jsx";
 import StackedLineChart from "../component/chart/StackedLineChart.jsx";
@@ -20,7 +20,6 @@ const InsPage = () => {
         gage4: managementTypes[index]?.gage4 || 0,
         crackWidth: managementTypes[index]?.crackWidth || 0,
     }));
-
 
     useEffect(() => {
         // 계측기 정보 가져오기
@@ -52,20 +51,25 @@ const InsPage = () => {
             });
     }, [id]);
 
+    const navigate = useNavigate();
+
+    // 로그인 정보 없을 시, 로그인 페이지로 이동
+    useEffect(() => {
+        if (!user || !user.id) {
+            navigate('/');
+        }
+    }, [user, navigate]);
+
     return (
         <div className='d-flex vh-100'>
             <CustomSidebar topManager={user.topManager}/>
             <div className={'insMainLayout'}>
                 {instrument ? (
                     <div className={'insSection'}>
-                        <div className={'insTitleSection'}>
-                            <span>
-                                {instrument.instrId?.insName || '계측기 이름이 없습니다.'} 상세 정보
-                            </span>
-                            <span>기초 자료 정보</span>
-                        </div>
-                        <table className='table table-bordered'>
-                            <tbody>
+                        <span className={'insTitle mb-3'}>
+                            {instrument.instrId?.insName || '계측기 이름이 없습니다.'} 상세 정보
+                        </span>
+                        <table className={'table insInfoTable'}>
                             <tr>
                                 <th>현 장 명</th>
                                 <td>{instrument.instrId?.sectionId?.sectionName}</td>
@@ -83,16 +87,8 @@ const InsPage = () => {
                                 <td>{instrument.instrId?.insLocation}</td>
                             </tr>
                             <tr>
-                                <th>시리얼 NO</th>
-                                <td>{instrument.instrId?.insNo}</td>
-                            </tr>
-                            <tr>
                                 <th>설치일자</th>
                                 <td>{instrument.instrId?.createDate}</td>
-                            </tr>
-                            <tr>
-                                <th>계측기 종류</th>
-                                <td>{instrument.instrId?.insType}</td>
                             </tr>
                             {/* 각 계측기 타입에 따른 추가 정보 */}
                             {instrument.instrId?.insType === 'B' && (
@@ -155,13 +151,11 @@ const InsPage = () => {
                                     </tr>
                                 </>
                             )}
-                            </tbody>
                         </table>
-
-                        {/* 차트 공간 */}
-                        <StackedLineChart data={chartData} instrumentType={instrument.instrId?.insType}/>
-
-                        <h3>측정 데이터</h3>
+                        <div className={'border p-2'}>
+                            {/* 차트 공간 */}
+                            <StackedLineChart data={chartData} instrumentType={instrument.instrId?.insType}/>
+                        </div>
                         <table className='table table-bordered'>
                             <thead>
                             <tr>

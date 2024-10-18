@@ -58,6 +58,23 @@
 .customSideBarBtn:hover {
     color: rgba(255, 255, 255, 0.82);
 }
+/* 드롭다운 기본 상태: 최대 높이 0 */
+.dpContent {
+    width: 100%;
+    height: 0;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+.dpContent.open {
+    height: 100%;
+}
+.dpContent .customSideBarLink {
+    padding-left: 2rem;
+}
+.dpContent .customSideBarLink.active {
+    background-color: rgba(105, 178, 153, 0.79);
+    color: rgba(255, 255, 255, 0.83);
+}
 /* 아이콘 색상 */
 .greenIcon {
     color: #45987b;
@@ -105,6 +122,8 @@
 .sectionDetailSideBar,
 .insDetailSideBar{
     width: 280px;
+    max-height: 100vh;
+    overflow: auto;
     padding: 2em 0em;
     background-color: white;
     border-right: 1px solid #c4c4c4;
@@ -293,7 +312,6 @@
 }
 /* insDetailSideBar */
 .InsDetail {
-    max-height: 75vh;
     overflow: auto;
 }
 .InsDetail2 {
@@ -343,23 +361,59 @@
     opacity: 1;
     transform: translateX(0);
 }
-
-.rpBtn {
-        border: 1px solid #54B091D8;
-        background-color: #54B091D8;
-        color: white;
-        transition: all 0.5s ease;
-        width: 80px; /* 버튼의 너비 */
-        height: 40px; /* 버튼의 높이 */
-        font-size: 12px; /* 버튼 글자 크기 */
-    margin: 1em;
+.reportUpBtn {
+    border: 1px solid rgb(142, 201, 182);
+    background-color: rgb(142, 201, 182);
+    color: #ffffff;
+    font-size: 0.85rem;
+    padding: 0.3rem 1rem;
+    border-radius: 0.8rem;
 }
-
-.rtBtn {
-    color: #54B091D8;
-    width: 70px; /* 버튼의 너비 */
-    height: 30px; /* 버튼의 높이 */
-    font-size: 12px; /* 버튼 글자 크기 */
+.reportUpBtn:hover {
+    border: 1px solid rgb(130, 183, 166);
+    background-color: rgb(130, 183, 166);
+    color: white;
+}
+.reportCard {
+    display: inline-block;
+    background-color: white;
+    border: 1px solid rgba(199, 199, 199, 0.42);
+    border-radius: 0.3rem;
+    padding: 0.5rem 0.4rem;
+    transition: all 0.5s ease;
+}
+.reportCard:hover {
+    cursor: pointer;
+    transform: scale(1.01);
+}
+.reportTitle {
+    font-size: 0.92rem;
+}
+.reportUser {
+    font-size: 0.87rem;
+    color: #646464;
+}
+.reportDate {
+    font-size: 0.8rem;
+    color: darkgray;
+}
+.imgCard {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    border: 1px solid rgba(199, 199, 199, 0.42);
+    border-radius: 0.3rem;
+    padding: 0.5rem 0.4rem;
+    transition: all 0.5s ease;
+}
+.imgCard:hover {
+    cursor: pointer;
+    background-color: #f6f6f6;
+}
+.imgText {
+    font-size: 0.8rem;
+    color: #a4a4a4;
 }
 
 /* 종합분석지 버튼 Link to 넣으니까 작아져서 수정함 일단 */

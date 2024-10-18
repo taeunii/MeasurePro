@@ -66,7 +66,10 @@ public class ManagementController {
         // 관리 정보 조회
         List<MeausreProManagement> managementList = managementService.findByInstrument(instrIdx);
 
-        if (managementList.isEmpty()) {
+        System.out.println("\n" + instrIdx + "\n");
+
+        // Null 체크 추가
+        if (managementList == null || managementList.isEmpty()) {
             return ResponseEntity.notFound().build(); // 관리 정보가 없으면 404 반환
         }
 

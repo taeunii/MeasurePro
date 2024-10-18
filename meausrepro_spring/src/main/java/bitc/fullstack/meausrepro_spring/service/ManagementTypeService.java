@@ -21,4 +21,9 @@ public class ManagementTypeService {
     public Optional<MeausreProManType> findByMaIdx(int maIdx) {
         return manTypeRepository.findById(String.valueOf(maIdx)); // 관리번호로 조회
     }
+
+    // 계측기 추가 측정값 삭제
+    public void delete(int maIdx) {
+        manTypeRepository.deleteByMaIdx(maIdx);
+    }
 }

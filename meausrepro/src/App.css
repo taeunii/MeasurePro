@@ -33,22 +33,18 @@ body {
   line-height: 1;
 }
 /* btn */
-.signUpBtn,
 .greenBtn,
 .backGreenBtn:hover{
-  background-color: #45997c;
-  border: 1px solid #45997c;
+  background-color: #45987b;
+  border: 1px solid #45987b;
+  color: rgba(255, 255, 255, 0.91);
+}
+.greenBtn:hover,
+.backGreenBtn{
+  background-color: #3a7e66;
+  border: 1px solid #3a7e66;
   color: white;
 }
-
-.signUpBtn:hover
-.backGreenBtn,
-.greenBtn:hover {
-  background-color: #3c8169;
-  border: 1px solid #45997c;
-  color: white;
-}
-
 /* header */
 .header {
   position: fixed;
@@ -128,22 +124,6 @@ body {
   padding: 0.7em;
   transition: all 0.3s ease;
 }
-/* 드롭다운 기본 상태: 최대 높이 0 */
-.dpContent {
-  width: 100%;
-  height: 0;
-  transition: all 0.3s ease;
-  overflow: hidden;
-}
-.dpContent.open {
-  height: 100%;
-}
-.dpContent .customSideBarLink {
-  padding-left: 2rem;
-}
-.dpContent .customSideBarLink.active {
-  background-color: #d1e8cb;
-}
 /* main */
 .mainSection {
   display: inline-block;
@@ -208,40 +188,15 @@ body {
   gap: 0.5rem;
 }
 .managementBtn {
-  border: 1px solid #45997c;
+  border: 1px solid #61ad93;
   color: white;
-  background-color: #45997c;
+  background-color: #61ad93;
   transition: all 0.5s ease;
 }
 .managementBtn:hover {
   border: 1px solid #45997c;
-  color: #45997c;
-  background-color: white;
-}
-
-
-.rpBtn {
-  border: 1px solid #96C885FF;
-  color: #96C885FF;
-  transition: all 0.5s ease;
-}
-
-.rpBtn:hover {
-  border: 1px solid #96C885FF;
   color: white;
-  background-color: #96C885FF;
-}
-
-.qrBtn {
-  border: 1px solid #96C885FF;
-  color: #96C885FF;
-  transition: all 0.5s ease;
-}
-
-.qrBtn:hover {
-  border: 1px solid #96C885FF;
-  color: white;
-  background-color: #96C885FF;
+  background-color: #45997c;
 }
 
 /* insPage */
@@ -259,11 +214,24 @@ body {
   flex-direction: column;
   gap: 0.5rem;
 }
-.insTitleSection {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.3rem;
+.insTitle {
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+.insInfoTable {
+  border: 1px solid #dadada;
+}
+.insInfoTable th,
+.insInfoTable tr,
+.insInfoTable td{
+  padding: 0.4rem;
+  border: 1px solid #dadada;
+}
+.insInfoTable th {
+  font-size: 0.95rem;
+}
+.insInfoTable td {
+  font-size: 0.9rem;
 }
 
 /* 종합분석지 차트 */

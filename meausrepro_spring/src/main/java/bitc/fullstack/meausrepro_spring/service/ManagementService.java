@@ -1,17 +1,19 @@
 package bitc.fullstack.meausrepro_spring.service;
 
-import bitc.fullstack.meausrepro_spring.model.MeausreProInstrument;
 import bitc.fullstack.meausrepro_spring.model.MeausreProManagement;
 import bitc.fullstack.meausrepro_spring.repository.ManagementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ManagementService {
     @Autowired
     private ManagementRepository managementRepository;
+    @Autowired
+    private ManagementTypeService managementTypeService;
 
     // 저장
     public MeausreProManagement save(MeausreProManagement management) {
@@ -20,8 +22,14 @@ public class ManagementService {
 
     // 조회
     public List<MeausreProManagement> findByInstrument(int instrIdx) {
-        MeausreProInstrument instrument = new MeausreProInstrument();
-        instrument.setIdx(instrIdx); // 계측기 ID 설정
-        return managementRepository.findByInstr(instrument); // 해당 계측기와 관련된 관리 정보 반환
+        return managementRepository.findByInsIdxList(instrIdx);
+    }
+
+    // 삭제
+    public void deleteByInsId(int insIdx) {
+        Optional<MeausreProManagement> management = managementRepository.findByInsIdx(insIdx);
+
+        managementTypeService.delete(management.get().getIdx());
+        managementRepository.deleteById(String.valueOf(management.get().getIdx()));
     }
 }

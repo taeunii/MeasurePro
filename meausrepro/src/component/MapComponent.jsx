@@ -184,11 +184,11 @@ function MapComponent(props) {
                 const polygon = new naver.maps.Polygon({
                     map: mapInstance,
                     paths: geometry,
-                    fillColor: "#fdb74f",
-                    fillOpacity: 0.5,
-                    strokeColor: "#fdb74f",
+                    fillColor: "#98d3bd",
+                    fillOpacity: 0.4,
+                    strokeColor: "#98d3bd",
                     strokeOpacity: 0.8,
-                    strokeWeight: 3,
+                    strokeWeight: 1,
                     clickable: true,
                 });
 
@@ -232,11 +232,11 @@ function MapComponent(props) {
         const polygon = new naver.maps.Polygon({
             map: map,
             paths: [[]],
-            fillColor: "#4285F4",
-            fillOpacity: 0.3,
-            strokeColor: "#4285F4",
-            strokeOpacity: 0.6,
-            strokeWeight: 3,
+            fillColor: "#75a4fd",
+            fillOpacity: 0.4,
+            strokeColor: "#75a4fd",
+            strokeOpacity: 0.8,
+            strokeWeight: 1,
             clickable: true,
         });
 
@@ -251,8 +251,8 @@ function MapComponent(props) {
                 const circle = new naver.maps.Circle({
                     map: map,
                     center: point,
-                    radius: 1.5,  // 동그란 점의 크기
-                    fillColor: "#4285F4",  // 점 색상
+                    radius: 1.2,  // 동그란 점의 크기
+                    fillColor: "#527dd0",  // 점 색상
                     fillOpacity: 1,
                     strokeWeight: 0,  // 경계선 제거
                 });
@@ -314,11 +314,11 @@ function MapComponent(props) {
         const newPolygon = new naver.maps.Polygon({
             map: mapInstance, // 현재 지도 인스턴스에 추가
             paths: polygonCoords.map(([lat, lng]) => new naver.maps.LatLng(lat, lng)),
-            fillColor: "#fdb74f",
-            fillOpacity: 0.5,
-            strokeColor: "#fdb74f",
+            fillColor: "#98d3bd",
+            fillOpacity: 0.4,
+            strokeColor: "#98d3bd",
             strokeOpacity: 0.8,
-            strokeWeight: 3,
+            strokeWeight: 1,
             clickable: true,
         });
 
@@ -746,24 +746,23 @@ function MapComponent(props) {
                         position: 'absolute',
                         top: `${contextMenuPosition.y}px`,
                         left: `${contextMenuPosition.x}px`,
-                        background: '#fff',
-                        padding: '10px',
-                        border: '2px solid #333',
+                        background: 'rgba(255,255,255,0.82)',
                         zIndex: '1000'
                     }}
+                    className={'d-flex flex-column gap-2 p-2 border rounded-3'}
                 >
                     {currentPolygonId ? (
                         <>
-                            <button onClick={handleSaveGeometry}>저장</button>
+                            <button className={'btn btn-success opacity-50 py-0 px-3'} onClick={handleSaveGeometry}>저장</button>
                             {/* 기존 폴리곤 저장 */}
-                            <button onClick={handleReset}>다시 그리기</button>
+                            <button className={'btn btn-outline-dark opacity-50 py-0 px-3'} onClick={handleReset}>다시 그리기</button>
                             {/* 기존 폴리곤 다시 그리기 */}
                         </>
                     ) : (
                         <>
-                            <button onClick={handleSave}>저장</button>
+                            <button className={'btn btn-success opacity-50 py-0 px-3'} onClick={handleSave}>저장</button>
                             {/* 신규 폴리곤 저장 */}
-                            <button onClick={handleReset}>다시 그리기</button>
+                            <button className={'btn btn-outline-dark opacity-50 py-0 px-3'} onClick={handleReset}>다시 그리기</button>
                             {/* 신규 폴리곤 다시 그리기 */}
                         </>
                     )}
@@ -775,24 +774,30 @@ function MapComponent(props) {
                         position: 'absolute',
                         top: `${contextMenuPosition.y}px`,
                         left: `${contextMenuPosition.x}px`,
-                        background: '#fff',
-                        padding: '10px',
-                        border: '2px solid #333',
+                        background: 'rgba(255,255,255,0.82)',
                         zIndex: '1000'
                     }}
+                    className={'d-flex flex-column gap-2 p-2 border rounded-3'}
                 >
                     {currentInsMarkerId ? (
                         <>
-                            <button onClick={handleSaveInsGeometry}>저장</button>
+                            <button className={'btn btn-success opacity-50 py-0 px-3'}
+                                    onClick={handleSaveInsGeometry}>저장
+                            </button>
                             {/* 기존 계측기 마커 저장 */}
-                            <button onClick={handleInsReset}>다시 그리기</button>
+                            <button className={'btn btn-outline-dark opacity-50 py-0 px-3'} onClick={handleInsReset}>다시
+                                그리기
+                            </button>
                             {/* 기존 계측기 마커 다시 그리기 */}
                         </>
                     ) : (
                         <>
-                            <button onClick={handleSaveIns}>저장</button>
+                            <button className={'btn btn-success opacity-50 py-0 px-3'} onClick={handleSaveIns}>저장
+                            </button>
                             {/* 신규 계측기 마커 저장 */}
-                            <button onClick={handleInsReset}>다시 그리기</button>
+                            <button className={'btn btn-outline-dark opacity-50 py-0 px-3'} onClick={handleInsReset}>다시
+                                그리기
+                            </button>
                             {/* 신규 계측기 마커 다시 그리기 */}
                         </>
                     )}
