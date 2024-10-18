@@ -29,7 +29,6 @@ public class ImgController {
     public ResponseEntity<MeausreProImg> upload(
             @RequestParam("file") MultipartFile file,
             @PathVariable("sectionId") int sectionId
-//            @RequestParam("description") String desc
     ) {
 
         MeausreProImg img = imgService.uploadImage(file, sectionId);
