@@ -431,7 +431,7 @@ function SectionDetailSideBar(props) {
                                         <span className={'qrInfo'}>
                                                 {`${section.sectionName} 계측기 : ${instrumentNumbers[index].insNum}`}
                                         </span>
-                                        <QRCodeCanvas value={instrument.idx}/>
+                                        <QRCodeCanvas value={`${instrument.idx}`}/>
                                     </div>
                                 </td>
                                 {instrumentNumbers[index + 1] && (
@@ -444,7 +444,7 @@ function SectionDetailSideBar(props) {
                                                 {`${section.sectionName} 계측기 : ${instrumentNumbers[index + 1].insNum}`}
                                             </span>
                                             <QRCodeCanvas
-                                                value={instrumentNumbers[index + 1].idx}/>
+                                                value={`${instrumentNumbers[index + 1].idx}`}/>
                                         </div>
                                     </td>
                                 )}

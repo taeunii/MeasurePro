@@ -140,10 +140,10 @@ function UserManagement() {
                                             <td>
                                                 <button
                                                     type={'button'}
-                                                    className={'projectUpdate sideBarBtn'}
+                                                    className={'iconBtnGreen iconBtn'}
                                                     onClick={() => openUserUpdateModal(item)}
                                                 >
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                                          fill="currentColor" className="bi bi-pencil-square"
                                                          viewBox="0 0 16 16">
                                                         <path
@@ -154,7 +154,8 @@ function UserManagement() {
                                                 </button>
                                             </td>
                                             <td>
-                                                <button type={'button'} className={'sideBarBtn projectDelete'} onClick={() => handleDelete(item.idx)}>
+                                                <button type={'button'} className={'iconBtn iconBtnRed'}
+                                                        onClick={() => handleDelete(item.idx)}>
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                          fill="currentColor"
                                                          className="bi bi-trash3" viewBox="0 0 16 16">

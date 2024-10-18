@@ -648,7 +648,7 @@ function InsDetailSideBar(props) {
                                     {`${sectionName} 계측기 : ${insData.insNum}`}
                                 </span>
                                 <QRCodeCanvas
-                                    value={insData.idx}/>
+                                    value={`${insData.idx}`}/>
                             </div>
                         </td>
                     </tr>

@@ -205,15 +205,15 @@ body {
   gap: 0.5rem;
 }
 .managementBtn {
-  border: 1px solid #96C885FF;
+  border: 1px solid #45997c;
   color: white;
-  background-color: #8dc17d;
+  background-color: #45997c;
   transition: all 0.5s ease;
 }
 .managementBtn:hover {
-  border: 1px solid #6a915e;
-  color: white;
-  background-color: #6a915e;
+  border: 1px solid #45997c;
+  color: #45997c;
+  background-color: white;
 }
 
 
