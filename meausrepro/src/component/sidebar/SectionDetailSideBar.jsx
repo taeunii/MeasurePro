@@ -565,7 +565,7 @@ function SectionDetailSideBar(props) {
                                                         type={'text'}
                                                         className={'form-control'}
                                                         value={img.imgDes}
-                                                        onChange={(e) => handleImgDescriptionChange(e.target.value, img.idx)}
+                                                        onChange={(e) => handleImgDescriptionChange(e, img.idx)}
                                                         onBlur={() => handleImgDescriptionBlur(img.imgDes, img.idx)}
                                                         placeholder={'이미지 설명을 입력하세요.'}
                                                     />
