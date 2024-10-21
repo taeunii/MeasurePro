@@ -33,6 +33,14 @@
     color: #fd5252;
     font-size: 0.9rem;
 }
+.modal-body .input-group {
+    border-radius: 0.5rem;
+    border: 1px solid #b4b4b4;
+    font-size: 0.95rem;
+}
+.modal-body .input-group .form-control {
+    border: none;
+}
 .modal-body input,
 .modal-body select{
     border-radius: 0.5rem;
@@ -63,7 +71,7 @@
     background-color: rgb(246, 246, 246);
     color: #6e6e6e;
 }
-input[type="checkbox"] {
+.modal-body input[type="checkbox"] {
     display: none;
 }
 .loginGrid {

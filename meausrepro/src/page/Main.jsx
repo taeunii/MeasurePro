@@ -49,7 +49,7 @@ function Main() {
     }, [user, navigate]);
 
     const fetchProjects = () => {
-        axios.get(`http://localhost:8080/MeausrePro/Project/inProgress/${encodeURIComponent(user.id)}/${user.topManager}`)
+        axios.get(`http://localhost:8080/MeausrePro/Project/inProgress/${encodeURIComponent(user.id)}`)
             .then(res => {
                 setProjectList(res.data);
             })

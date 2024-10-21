@@ -1,4 +1,3 @@
-import StackedLineChart from "../component/chart/StackedLineChart.jsx";
 import MetrologySensor from "../component/chart/MetrologySensor.jsx";
 
 function Report() {

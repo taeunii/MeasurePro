@@ -163,7 +163,6 @@ function UserSignUpModal(props) {
              data-bs-keyboard={'false'}
              aria-labelledby={'userModalLabel'}
              aria-hidden={!isOpen}
-             style={{display: isOpen ? 'block' : 'none'}}
         >
             <div className={'modal-dialog modal-dialog-centered modal-dialog-scrollable'}>
                 <div className={'modal-content'}>
@@ -173,8 +172,8 @@ function UserSignUpModal(props) {
                                 MeausrePro
                             </span>
                             <span className={'modal-info'}>
-                            MeausrePro 관리자 추가
-                        </span>
+                                MeausrePro 관리자 추가
+                            </span>
                         </div>
                     </div>
                     <div className={'modal-body'}>

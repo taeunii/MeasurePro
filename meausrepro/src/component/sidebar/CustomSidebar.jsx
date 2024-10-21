@@ -43,10 +43,10 @@ function CustomSidebar(props) {
                     </div>
                 </Link>
                 <Link
-                    to="/report"
+                    to="/Report"
                     className={`text-decoration-none`}
                 >
-                    <div className={`customSideBarLink ${location.pathname === '/report' ? 'active' : ''}`}>
+                    <div className={`customSideBarLink ${location.pathname === '/Report' ? 'active' : ''}`}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              className="bi bi-printer" viewBox="0 0 16 16">
                             <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1"/>
@@ -103,13 +103,26 @@ function CustomSidebar(props) {
                         </div>
                     </div>
                 )}
+                <Link to={'/ProjectManagement'}
+                      className={'text-decoration-none'}>
+                    <div className={`customSideBarLink ${location.pathname === '/ProjectManagement' ? 'active' : ''}`}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             className="bi bi-journals" viewBox="0 0 16 16">
+                            <path
+                                d="M5 0h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2 2 2 0 0 1-2 2H3a2 2 0 0 1-2-2h1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1H1a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v9a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1H3a2 2 0 0 1 2-2"/>
+                            <path
+                                d="M1 6v-.5a.5.5 0 0 1 1 0V6h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V9h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 2.5v.5H.5a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1H2v-.5a.5.5 0 0 0-1 0"/>
+                        </svg>
+                        <span>프로젝트 관리</span>
+                    </div>
+                </Link>
             </div>
             <button className={'customSideBarBtn'}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                      className="bi bi-box-arrow-left" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd"
+                    <path fillRule="evenodd"
                           d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z"/>
-                    <path fill-rule="evenodd"
+                    <path fillRule="evenodd"
                           d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z"/>
                 </svg>
                 <span>

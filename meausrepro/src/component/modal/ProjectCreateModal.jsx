@@ -100,7 +100,6 @@ function ProjectCreateModal(props) {
             tabIndex={'-1'}
             aria-labelledby={'cpModalLabel'}
             aria-hidden={!isOpen}
-            style={{display: isOpen ? 'block' : 'none'}}
         >
             <div className={'modal-dialog modal-dialog-centered modal-dialog-scrollable'}>
                 <div className={'modal-content'}>

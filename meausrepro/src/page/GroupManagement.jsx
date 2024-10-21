@@ -29,7 +29,7 @@ function GroupManagement() {
     // 현재 페이지 번호
     const [page, setPage] = useState(1);
     // 페이지 당 게시글 수
-    const itemsPerPage = 10;
+    const itemsPerPage = 15;
 
     // 페이지 이동
     const changePageHandler = (page) => {
@@ -42,6 +42,7 @@ function GroupManagement() {
     const indexOfLastItem = page * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
+    // 페이지네이션 적용 위한 currentList 업데이트
     useEffect(() => {
         setCurrentList(companyList.slice(indexOfFirstItem, indexOfLastItem));
     }, [page, companyList]);
@@ -130,14 +131,13 @@ function GroupManagement() {
             <div className={'flex-grow-1'}>
                 <div className={'mainSection d-flex flex-column'}>
                     <div className={'managementSection'}>
-                        <span className={'text-center fs-4 fw-bold'}>작업그룹 관리</span>
                         <div className={'d-flex justify-content-end'}>
                             <button type={'button'}
                                     className={'px-3 py-2 rounded-pill managementBtn'} onClick={openCompanyModal}>
-                                + 신규등록
+                                신규등록
                             </button>
                         </div>
-                        <div className={'p-3 rounded-3 border align-items-start'}>
+                        <div className={'paginationSection'}>
                             <table className={'table text-center'} style={{verticalAlign: 'middle'}}>
                                 <thead>
                                 <tr>
@@ -149,27 +149,29 @@ function GroupManagement() {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {companyList.length === 0 ? (
+                                {currentList.length === 0 ? (
                                     <tr>
                                         <td colSpan={5}>
                                             출력할 내용이 없습니다.
                                         </td>
                                     </tr>
                                 ) : (
-                                    companyList.map((item, index) => (
+                                    currentList.map((item, index) => (
                                         <tr key={index}>
                                             <td>{item.company}</td>
                                             <td>{item.companyName}</td>
                                             <td className={'d-flex justify-content-center'}>
                                                 <div className={'form-check form-switch'}>
-                                                    <input type="checkbox" className={'form-check-input'}
-                                                           checked={item.companyIng === 'Y'}
-                                                           onChange={() => toggleCompanyStatus(index)}/>
+                                                    <input
+                                                        type="checkbox"
+                                                        className={'form-check-input custom-switch'}
+                                                        checked={item.companyIng === 'Y'}
+                                                        onChange={() => toggleCompanyStatus(index)}/>
                                                 </div>
 
                                             </td>
                                             <td>
-                                                <button type={'button'} className={'projectUpdate sideBarBtn'} onClick={() => openCompanyUpdateModal(item)}>
+                                                <button type={'button'} className={'iconBtn iconBtnGreen'} onClick={() => openCompanyUpdateModal(item)}>
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                          fill="currentColor" className="bi bi-pencil-square"
                                                          viewBox="0 0 16 16">
@@ -181,7 +183,7 @@ function GroupManagement() {
                                                 </button>
                                             </td>
                                             <td>
-                                                <button type={'button'} className={'sideBarBtn projectDelete'}
+                                                <button type={'button'} className={'iconBtn iconBtnRed'}
                                                         onClick={() => handleDelete(item.idx)}>
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                          fill="currentColor"

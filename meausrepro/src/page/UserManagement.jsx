@@ -6,6 +6,7 @@ import axios from "axios";
 import UserSignUpModal from "../component/modal/UserSignUpModal.jsx";
 import UserUpdateModal from "../component/modal/UserUpdateModal.jsx";
 import Pagination from "../component/pagination/Pagination.jsx";
+import Swal from "sweetalert2";
 
 function UserManagement() {
     const { user } = useContext(UserContext);
@@ -38,7 +39,7 @@ function UserManagement() {
     // 현재 페이지 번호
     const [page, setPage] = useState(1);
     // 페이지 당 게시글 수
-    const itemsPerPage = 10;
+    const itemsPerPage = 15;
 
     // 페이지 이동
     const changePageHandler = (page) => {
@@ -103,7 +104,6 @@ function UserManagement() {
             <div className={'flex-grow-1'}>
                 <div className={'mainSection d-flex flex-column'}>
                     <div className={'managementSection'}>
-                        <span className={'text-center fs-4 fw-bold'}>회원정보관리</span>
                         <div className={'d-flex justify-content-end'}>
                             <button type={'button'}
                                     className={'px-3 py-2 rounded-pill managementBtn'}
@@ -111,7 +111,7 @@ function UserManagement() {
                                 신규등록
                             </button>
                         </div>
-                        <div className={'p-3 rounded-3 border align-items-start'}>
+                        <div className={'paginationSection'}>
                             <table className={'table table-hover text-center'} style={{ verticalAlign: 'middle' }}>
                                 <thead>
                                 <tr>
@@ -125,12 +125,12 @@ function UserManagement() {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {userList.length === 0 ? (
+                                {currentList.length === 0 ? (
                                     <tr>
                                         <td colSpan={9}>출력할 내용이 없습니다.</td>
                                     </tr>
                                 ) : (
-                                    userList.map((item, index) => (
+                                    currentList.map((item, index) => (
                                         <tr key={index}>
                                             <td>{item.id}</td>
                                             <td>{item.name}</td>

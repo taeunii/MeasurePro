@@ -261,44 +261,57 @@ function InstrumentCreateModal(props) {
             data-bs-keyboard={'false'}
             aria-labelledby={'csModalLabel'}
             aria-hidden={!isOpen}
-            style={{display: isOpen ? 'block' : 'none'}}
         >
             <div className={'modal-dialog modal-dialog-centered modal-dialog-scrollable'}>
                 <div className={'modal-content'}>
                     <div className={'modal-header'}>
-                        <span className={'fs-4 modal-title'} id={'cpModalLabel'}>
-                            계측기 기본정보
-                        </span>
-                        <button type={'button'}
-                                className={'btn-close'}
-                                data-bs-dismiss={'modal'}
-                                aria-label={'Close'}
-                                onClick={handleCloseModal}
-                        />
+                        <div className={'modal-header-text'}>
+                            <span id={'cpModalLabel'} className={'modal-title'}>
+                                MeausrePro
+                            </span>
+                            <span className={'modal-info'}>
+                                계측기 생성
+                            </span>
+                        </div>
                     </div>
                     <div className={'modal-body'}>
                         <div className={'d-flex flex-column'}>
-                            <span className={'fs-5 modal-title'} id={'cpModalLabel'}>
+                            <span className={'fs-5 modal-title'}
+                                  id={'cpModalLabel'}>
                                 속성
                             </span>
-                            <label htmlFor={'siteName'}
-                                   className={'form-label mt-2'}>
-                                현장명
-                            </label>
-                            <span onChange={(e) => setSiteName(e.target.value)}>{siteName}</span>
-                            <label htmlFor={'sectionName'}
-                                   className={'form-label mt-2'}>
-                                구간명
-                            </label>
-                            <span onChange={(e) => setSectionName(e.target.value)}>{sectionName}</span>
                             <div className={'row mt-2'}>
-                                <div className={'col-6 d-flex flex-column'}>
+                                <div className={'col-sm-3'}>
+                                    <label htmlFor={'siteName'}
+                                           className={'form-label text-muted'}>
+                                        현장명
+                                    </label>
+                                </div>
+                                <div className={'col-sm'}>
+                                    <span onChange={(e) => setSiteName(e.target.value)}>{siteName}</span>
+                                </div>
+                            </div>
+                            <div className={'row'}>
+                                <div className={'col-sm-3'}>
+                                    <label htmlFor={'sectionName'}
+                                           className={'form-label text-muted'}>
+                                        구간명
+                                    </label>
+                                </div>
+                                <div className={'col-sm'}>
+                                    <span onChange={(e) => setSectionName(e.target.value)}>{sectionName}</span>
+                                </div>
+                            </div>
+                            <div className={'row mt-2'}>
+                            <div className={'col-6 d-flex flex-column'}>
                                     <label htmlFor={'insType'}
-                                           className={'form-label mt-2'}>
+                                           className={'form-label'}>
                                         계측기 종류:
                                     </label>
-                                    <select className={'form-select'} id={'insType'} value={insType}
-                                            onChange={handleSelectInsTypeChange}>
+                                    <select
+                                        id={'insType'}
+                                        value={insType}
+                                        onChange={handleSelectInsTypeChange}>
                                         <option selected value="">구간내계측기종류선택</option>
                                         <option value="하중계_버팀대">하중계_버팀대</option>
                                         <option value="하중계_PSBEAM">하중계_PSBEAM</option>
@@ -310,11 +323,10 @@ function InstrumentCreateModal(props) {
                                 </div>
                                 <div className={'col-6 d-flex flex-column'}>
                                     <label htmlFor={'insNum'}
-                                           className={'form-label mt-2'}>
+                                           className={'form-label'}>
                                         계측기 관리번호:
                                     </label>
                                     <input type={'text'}
-                                           className={'form-control'}
                                            id={'insNum'}
                                            value={insNum}
                                            onChange={(e) => setInsNum(e.target.value)}
@@ -323,11 +335,10 @@ function InstrumentCreateModal(props) {
                                 </div>
                                 <div className={'col-6 d-flex flex-column mt-2'}>
                                     <label htmlFor={'insName'}
-                                           className={'form-label mt-2'}>
+                                           className={'form-label'}>
                                         제품명:
                                     </label>
                                     <input type={'text'}
-                                           className={'form-control'}
                                            id={'insName'}
                                            value={insName}
                                            onChange={(e) => setInsName(e.target.value)}
@@ -336,11 +347,10 @@ function InstrumentCreateModal(props) {
                                 </div>
                                 <div className={'col-6 d-flex flex-column mt-2'}>
                                     <label htmlFor={'insNo'}
-                                           className={'form-label mt-2'}>
+                                           className={'form-label'}>
                                         시리얼NO:
                                     </label>
                                     <input type={'text'}
-                                           className={'form-control'}
                                            id={'insNo'}
                                            value={insNo}
                                            onChange={(e) => setInsNo(e.target.value)}
@@ -348,17 +358,17 @@ function InstrumentCreateModal(props) {
                                     />
                                 </div>
                             </div>
-                            {['', '하중계_버팀대', '하중계_PSBEAM', '하중계_앵커', '변형률계(버팀대)', '구조물기울기계', '균열측정계'].includes(insType) && (
+                            {['', '하중계_버팀대', '하중계_PSBEAM', '하중계_앵커', '변형률계(버팀대)', '구조물기울기계',
+                              '균열측정계'].includes(insType) && (
                                 <div>
                                     <div className={'row'}>
                                         {['하중계_버팀대', '하중계_PSBEAM', '하중계_앵커', '변형률계(버팀대)'].includes(insType) && (
                                             <div className={'col-6 d-flex flex-column mt-2'}>
                                                 <label htmlFor={'logger'}
-                                                       className={'form-label mt-2'}>
+                                                       className={'form-label'}>
                                                     logger명:
                                                 </label>
                                                 <input type={'text'}
-                                                       className={'form-control'}
                                                        id={'logger'}
                                                        value={logger}
                                                        onChange={(e) => setLogger(e.target.value)}
@@ -368,32 +378,34 @@ function InstrumentCreateModal(props) {
                                         )}
                                         <div className={'col-6 d-flex flex-column mt-2'}>
                                             <label htmlFor={'insGeometry'}
-                                                   className={'form-label mt-2'}>
+                                                   className={'form-label'}>
                                                 지오매트리정보:
                                             </label>
-                                            <input type={'text'} className={'form-control'} id={'insGeometry'}
-                                                   value={insGeometryData}
-                                                   onChange={(e) => setInsNo(e.target.value)}
+                                            <input
+                                                type={'text'}
+                                                id={'insGeometry'}
+                                                value={insGeometryData}
+                                                onChange={(e) => setInsNo(e.target.value)}
                                                    placeholder={'지오매트리정보를 입력하세요'} readOnly
                                             />
                                         </div>
                                         <div className={'col-6 d-flex flex-column mt-2'}>
                                             <label htmlFor={'createDate'}
-                                                   className={'form-label mt-2'}>
+                                                   className={'form-label'}>
                                                 설치일자:
                                             </label>
                                             <input
                                                 type={'date'}
                                                 id={'createDate'}
-                                                className={'form-control'}
                                                 value={createDate}
                                                 min={today}
                                                 onChange={(e) => setCreateDate(e.target.value)}/>
                                         </div>
-                                        {['하중계_버팀대', '하중계_PSBEAM', '하중계_앵커', '변형률계(버팀대)', '구조물기울기계', '균열측정계'].includes(insType) && (
+                                        {['하중계_버팀대', '하중계_PSBEAM', '하중계_앵커', '변형률계(버팀대)', '구조물기울기계',
+                                          '균열측정계'].includes(insType) && (
                                             <div className={'col-6 d-flex flex-column mt-2'}>
                                                 <label htmlFor={'displacement'}
-                                                       className={'form-label mt-2'}>
+                                                       className={'form-label'}>
                                                     설계변위량:
                                                 </label>
                                                 <div className={'input-group'}>
@@ -402,21 +414,29 @@ function InstrumentCreateModal(props) {
                                                                 setDisplacement(displacement - 1)
                                                             }}>-
                                                     </button>
-                                                    <input type="text" id={'displacement'} value={displacement}
-                                                           className={'form-control text-center'}
-                                                           onChange={(e) => setDisplacement(e.target.value)}/>
-                                                    <button className={'btn btn-outline-secondary'} type={'button'}
-                                                            onClick={() => {
+                                                    <input
+                                                        type="text"
+                                                        id={'displacement'}
+                                                        value={displacement}
+                                                        className={'text-center form-control'}
+                                                        onChange={(e) => setDisplacement(e.target.value)}/>
+                                                    <button
+                                                        className={'btn btn-outline-secondary'}
+                                                        type={'button'}
+                                                        onClick={() => {
                                                                 setDisplacement(displacement + 1)
-                                                            }}>+
+                                                        }}
+                                                    >
+                                                        +
                                                     </button>
                                                 </div>
                                             </div>
                                         )}
-                                        {['하중계_버팀대', '하중계_PSBEAM', '하중계_앵커', '변형률계(버팀대)', '구조물기울기계', '균열측정계'].includes(insType) && (
+                                        {['하중계_버팀대', '하중계_PSBEAM', '하중계_앵커', '변형률계(버팀대)', '구조물기울기계',
+                                          '균열측정계'].includes(insType) && (
                                             <div className={'col-6 d-flex flex-column mt-2'}>
                                                 <label htmlFor={'measurement1'}
-                                                       className={'form-label mt-2'}>
+                                                       className={'form-label'}>
                                                     관리기준치1차:
                                                 </label>
                                                 <div className={'input-group'}>
@@ -425,9 +445,12 @@ function InstrumentCreateModal(props) {
                                                                 setMeasurement1(measurement1 - 1)
                                                             }}>-
                                                     </button>
-                                                    <input type="text" id={'measurement1'} value={measurement1}
-                                                           className={'form-control text-center'}
-                                                           onChange={(e) => setMeasurement1(e.target.value)}/>
+                                                    <input
+                                                        type="text"
+                                                        id={'measurement1'}
+                                                        value={measurement1}
+                                                        className={'text-center form-control'}
+                                                        onChange={(e) => setMeasurement1(e.target.value)}/>
                                                     <button className={'btn btn-outline-secondary'} type={'button'}
                                                             onClick={() => {
                                                                 setMeasurement1(measurement1 + 1)
@@ -436,10 +459,11 @@ function InstrumentCreateModal(props) {
                                                 </div>
                                             </div>
                                         )}
-                                        {['하중계_버팀대', '하중계_PSBEAM', '하중계_앵커', '변형률계(버팀대)', '구조물기울기계', '균열측정계'].includes(insType) && (
+                                        {['하중계_버팀대', '하중계_PSBEAM', '하중계_앵커', '변형률계(버팀대)', '구조물기울기계',
+                                          '균열측정계'].includes(insType) && (
                                             <div className={'col-6 d-flex flex-column mt-2'}>
                                                 <label htmlFor={'depExcavation'}
-                                                       className={'form-label mt-2'}>
+                                                       className={'form-label'}>
                                                     굴착고:
                                                 </label>
                                                 <div className={'input-group'}>
@@ -448,9 +472,12 @@ function InstrumentCreateModal(props) {
                                                                 setDepExcavation(depExcavation - 1)
                                                             }}>-
                                                     </button>
-                                                    <input type="text" id={'depExcavation'} value={depExcavation}
-                                                           className={'form-control text-center'}
-                                                           onChange={(e) => setDepExcavation(e.target.value)}/>
+                                                    <input
+                                                        type="text"
+                                                        id={'depExcavation'}
+                                                        value={depExcavation}
+                                                        className={'text-center form-control'}
+                                                        onChange={(e) => setDepExcavation(e.target.value)}/>
                                                     <button className={'btn btn-outline-secondary'} type={'button'}
                                                             onClick={() => {
                                                                 setDepExcavation(depExcavation + 1)
@@ -459,10 +486,11 @@ function InstrumentCreateModal(props) {
                                                 </div>
                                             </div>
                                         )}
-                                        {['하중계_버팀대', '하중계_PSBEAM', '하중계_앵커', '변형률계(버팀대)', '구조물기울기계', '균열측정계'].includes(insType) && (
+                                        {['하중계_버팀대', '하중계_PSBEAM', '하중계_앵커', '변형률계(버팀대)', '구조물기울기계',
+                                          '균열측정계'].includes(insType) && (
                                             <div className={'col-6 d-flex flex-column mt-2'}>
                                                 <label htmlFor={'measurement2'}
-                                                       className={'form-label mt-2'}>
+                                                       className={'form-label'}>
                                                     관리기준치2차:
                                                 </label>
                                                 <div className={'input-group'}>
@@ -471,9 +499,12 @@ function InstrumentCreateModal(props) {
                                                                 setMeasurement2(measurement2 - 1)
                                                             }}>-
                                                     </button>
-                                                    <input type="text" id={'measurement2'} value={measurement2}
-                                                           className={'form-control text-center'}
-                                                           onChange={(e) => setMeasurement2(e.target.value)}/>
+                                                    <input
+                                                        type="text"
+                                                        id={'measurement2'}
+                                                        value={measurement2}
+                                                        className={'text-center form-control'}
+                                                        onChange={(e) => setMeasurement2(e.target.value)}/>
                                                     <button className={'btn btn-outline-secondary'} type={'button'}
                                                             onClick={() => {
                                                                 setMeasurement2(measurement2 + 1)
@@ -482,14 +513,14 @@ function InstrumentCreateModal(props) {
                                                 </div>
                                             </div>
                                         )}
-                                        {['하중계_버팀대', '하중계_PSBEAM', '하중계_앵커', '변형률계(버팀대)', '구조물기울기계', '균열측정계'].includes(insType) && (
+                                        {['하중계_버팀대', '하중계_PSBEAM', '하중계_앵커', '변형률계(버팀대)', '구조물기울기계',
+                                          '균열측정계'].includes(insType) && (
                                             <div className={'col-6 d-flex flex-column mt-2'}>
                                                 <label htmlFor={'insLocation'}
-                                                       className={'form-label mt-2'}>
+                                                       className={'form-label'}>
                                                     설치위치:
                                                 </label>
                                                 <input type={'text'}
-                                                       className={'form-control'}
                                                        id={'insLocation'}
                                                        value={insLocation}
                                                        onChange={(e) => setInsLocation(e.target.value)}
@@ -497,10 +528,11 @@ function InstrumentCreateModal(props) {
                                                 />
                                             </div>
                                         )}
-                                        {['하중계_버팀대', '하중계_PSBEAM', '하중계_앵커', '변형률계(버팀대)', '구조물기울기계', '균열측정계'].includes(insType) && (
+                                        {['하중계_버팀대', '하중계_PSBEAM', '하중계_앵커', '변형률계(버팀대)', '구조물기울기계',
+                                          '균열측정계'].includes(insType) && (
                                             <div className={'col-6 d-flex flex-column mt-2'}>
                                                 <label htmlFor={'measurement3'}
-                                                       className={'form-label mt-2'}>
+                                                       className={'form-label'}>
                                                     관리기준치3차:
                                                 </label>
                                                 <div className={'input-group'}>
@@ -509,9 +541,12 @@ function InstrumentCreateModal(props) {
                                                                 setMeasurement3(measurement3 - 1)
                                                             }}>-
                                                     </button>
-                                                    <input type="text" id={'measurement3'} value={measurement3}
-                                                           className={'form-control text-center'}
-                                                           onChange={(e) => setMeasurement3(e.target.value)}/>
+                                                    <input
+                                                        type="text"
+                                                        id={'measurement3'}
+                                                        value={measurement3}
+                                                        className={'text-center form-control'}
+                                                        onChange={(e) => setMeasurement3(e.target.value)}/>
                                                     <button className={'btn btn-outline-secondary'} type={'button'}
                                                             onClick={() => {
                                                                 setMeasurement3(measurement3 + 1)
@@ -532,9 +567,12 @@ function InstrumentCreateModal(props) {
                                                                 setZeroRead(zeroRead - 1)
                                                             }}>-
                                                     </button>
-                                                    <input type="text" id={'zeroRead'} value={zeroRead}
-                                                           className={'form-control text-center'}
-                                                           onChange={(e) => setZeroRead(e.target.value)}/>
+                                                    <input
+                                                        type="text"
+                                                        id={'zeroRead'}
+                                                        value={zeroRead}
+                                                        className={'text-center form-control'}
+                                                        onChange={(e) => setZeroRead(e.target.value)}/>
                                                     <button className={'btn btn-outline-secondary'} type={'button'}
                                                             onClick={() => {
                                                                 setZeroRead(zeroRead + 1)
@@ -543,10 +581,11 @@ function InstrumentCreateModal(props) {
                                                 </div>
                                             </div>
                                         )}
-                                        {['하중계_버팀대', '하중계_PSBEAM', '하중계_앵커', '변형률계(버팀대)', '구조물기울기계', '균열측정계'].includes(insType) && (
+                                        {['하중계_버팀대', '하중계_PSBEAM', '하중계_앵커', '변형률계(버팀대)', '구조물기울기계',
+                                          '균열측정계'].includes(insType) && (
                                             <div className={'col-6 d-flex flex-column mt-2'}>
                                                 <label htmlFor={'verticalPlus'}
-                                                       className={'form-label mt-2'}>
+                                                       className={'form-label'}>
                                                     수직변위(+Y):
                                                 </label>
                                                 <div className={'input-group'}>
@@ -555,9 +594,12 @@ function InstrumentCreateModal(props) {
                                                                 setVerticalPlus(verticalPlus - 1)
                                                             }}>-
                                                     </button>
-                                                    <input type="text" id={'verticalPlus'} value={verticalPlus}
-                                                           className={'form-control text-center'}
-                                                           onChange={(e) => setVerticalPlus(e.target.value)}/>
+                                                    <input
+                                                        type="text"
+                                                        id={'verticalPlus'}
+                                                        value={verticalPlus}
+                                                        className={'text-center form-control'}
+                                                        onChange={(e) => setVerticalPlus(e.target.value)}/>
                                                     <button className={'btn btn-outline-secondary'} type={'button'}
                                                             onClick={() => {
                                                                 setVerticalPlus(verticalPlus + 1)
@@ -566,10 +608,11 @@ function InstrumentCreateModal(props) {
                                                 </div>
                                             </div>
                                         )}
-                                        {['하중계_버팀대', '하중계_PSBEAM', '하중계_앵커', '변형률계(버팀대)', '구조물기울기계', '균열측정계'].includes(insType) && (
+                                        {['하중계_버팀대', '하중계_PSBEAM', '하중계_앵커', '변형률계(버팀대)', '구조물기울기계',
+                                          '균열측정계'].includes(insType) && (
                                             <div className={'col-6 d-flex flex-column mt-2'}>
                                                 <label htmlFor={'verticalMinus'}
-                                                       className={'form-label mt-2'}>
+                                                       className={'form-label'}>
                                                     수직변위(-Y):
                                                 </label>
                                                 <div className={'input-group'}>
@@ -578,9 +621,12 @@ function InstrumentCreateModal(props) {
                                                                 setVerticalMinus(verticalMinus - 1)
                                                             }}>-
                                                     </button>
-                                                    <input type="text" id={'verticalMinus'} value={verticalMinus}
-                                                           className={'form-control text-center'}
-                                                           onChange={(e) => setVerticalMinus(e.target.value)}/>
+                                                    <input
+                                                        type="text"
+                                                        id={'verticalMinus'}
+                                                        value={verticalMinus}
+                                                        className={'text-center form-control'}
+                                                        onChange={(e) => setVerticalMinus(e.target.value)}/>
                                                     <button className={'btn btn-outline-secondary'} type={'button'}
                                                             onClick={() => {
                                                                 setVerticalMinus(verticalMinus + 1)
@@ -592,7 +638,7 @@ function InstrumentCreateModal(props) {
                                         {['하중계_버팀대', '하중계_PSBEAM', '하중계_앵커'].includes(insType) && (
                                             <div className={'col-6 d-flex flex-column mt-2'}>
                                                 <label htmlFor={'instrument'}
-                                                       className={'form-label mt-2'}>
+                                                       className={'form-label'}>
                                                     계기상수:
                                                 </label>
                                                 <div className={'input-group'}>
@@ -601,9 +647,12 @@ function InstrumentCreateModal(props) {
                                                                 setInstrument(instrument - 1)
                                                             }}>-
                                                     </button>
-                                                    <input type="text" id={'instrument'} value={instrument}
-                                                           className={'form-control text-center'}
-                                                           onChange={(e) => setInstrument(e.target.value)}/>
+                                                    <input
+                                                        type="text"
+                                                        id={'instrument'}
+                                                        value={instrument}
+                                                        className={'text-center form-control'}
+                                                        onChange={(e) => setInstrument(e.target.value)}/>
                                                     <button className={'btn btn-outline-secondary'} type={'button'}
                                                             onClick={() => {
                                                                 setInstrument(instrument + 1)
@@ -615,7 +664,7 @@ function InstrumentCreateModal(props) {
                                         {['하중계_버팀대', '하중계_PSBEAM'].includes(insType) && (
                                             <div className={'col-6 d-flex flex-column mt-2'}>
                                                 <label htmlFor={'knTone'}
-                                                       className={'form-label mt-2'}>
+                                                       className={'form-label'}>
                                                     1KN_TONE:
                                                 </label>
                                                 <div className={'input-group'}>
@@ -624,9 +673,12 @@ function InstrumentCreateModal(props) {
                                                                 setKnTone(knTone - 1)
                                                             }}>-
                                                     </button>
-                                                    <input type="text" id={'knTone'} value={knTone}
-                                                           className={'form-control text-center'}
-                                                           onChange={(e) => setKnTone(e.target.value)}/>
+                                                    <input
+                                                        type="text"
+                                                        id={'knTone'}
+                                                        value={knTone}
+                                                        className={'text-center form-control'}
+                                                        onChange={(e) => setKnTone(e.target.value)}/>
                                                     <button className={'btn btn-outline-secondary'} type={'button'}
                                                             onClick={() => {
                                                                 setKnTone(knTone + 1)
@@ -638,7 +690,7 @@ function InstrumentCreateModal(props) {
                                         {insType === '하중계_PSBEAM' && (
                                             <div className={'col-6 d-flex flex-column mt-2'}>
                                                 <label htmlFor={'tenAllowable'}
-                                                       className={'form-label mt-2'}>
+                                                       className={'form-label'}>
                                                     허용인장력:
                                                 </label>
                                                 <div className={'input-group'}>
@@ -647,9 +699,12 @@ function InstrumentCreateModal(props) {
                                                                 setTenAllowable(tenAllowable - 1)
                                                             }}>-
                                                     </button>
-                                                    <input type="text" id={'tenAllowable'} value={tenAllowable}
-                                                           className={'form-control text-center'}
-                                                           onChange={(e) => setTenAllowable(e.target.value)}/>
+                                                    <input
+                                                        type="text"
+                                                        id={'tenAllowable'}
+                                                        value={tenAllowable}
+                                                        className={'form-control text-center'}
+                                                        onChange={(e) => setTenAllowable(e.target.value)}/>
                                                     <button className={'btn btn-outline-secondary'} type={'button'}
                                                             onClick={() => {
                                                                 setTenAllowable(tenAllowable + 1)
@@ -661,7 +716,7 @@ function InstrumentCreateModal(props) {
                                         {insType === '하중계_앵커' && (
                                             <div className={'col-6 d-flex flex-column mt-2'}>
                                                 <label htmlFor={'tenDesign'}
-                                                       className={'form-label mt-2'}>
+                                                       className={'form-label'}>
                                                     설계긴장력:
                                                 </label>
                                                 <div className={'input-group'}>
@@ -670,9 +725,12 @@ function InstrumentCreateModal(props) {
                                                                 setTenDesign(tenDesign - 1)
                                                             }}>-
                                                     </button>
-                                                    <input type="text" id={'tenDesign'} value={tenDesign}
-                                                           className={'form-control text-center'}
-                                                           onChange={(e) => setTenDesign(e.target.value)}/>
+                                                    <input
+                                                        type="text"
+                                                        id={'tenDesign'}
+                                                        value={tenDesign}
+                                                        className={'text-center form-control'}
+                                                        onChange={(e) => setTenDesign(e.target.value)}/>
                                                     <button className={'btn btn-outline-secondary'} type={'button'}
                                                             onClick={() => {
                                                                 setTenDesign(tenDesign + 1)
@@ -684,11 +742,10 @@ function InstrumentCreateModal(props) {
                                         {insType === '구조물기울기계' && (
                                             <div className={'col-6 d-flex flex-column mt-2'}>
                                                 <label htmlFor={'aPlus'}
-                                                       className={'form-label mt-2'}>
+                                                       className={'form-label'}>
                                                     A(+):
                                                 </label>
                                                 <input type={'text'}
-                                                       className={'form-control'}
                                                        id={'aPlus'}
                                                        value={aPlus}
                                                        onChange={(e) => setAPlus(e.target.value)}
@@ -699,11 +756,10 @@ function InstrumentCreateModal(props) {
                                         {insType === '구조물기울기계' && (
                                             <div className={'col-6 d-flex flex-column mt-2'}>
                                                 <label htmlFor={'aMinus'}
-                                                       className={'form-label mt-2'}>
+                                                       className={'form-label'}>
                                                     A(-):
                                                 </label>
                                                 <input type={'text'}
-                                                       className={'form-control'}
                                                        id={'aMinus'}
                                                        value={aMinus}
                                                        onChange={(e) => setAMinus(e.target.value)}
@@ -714,11 +770,10 @@ function InstrumentCreateModal(props) {
                                         {insType === '구조물기울기계' && (
                                             <div className={'col-6 d-flex flex-column mt-2'}>
                                                 <label htmlFor={'bPlus'}
-                                                       className={'form-label mt-2'}>
+                                                       className={'form-label'}>
                                                     B(+):
                                                 </label>
                                                 <input type={'text'}
-                                                       className={'form-control'}
                                                        id={'bPlus'}
                                                        value={bPlus}
                                                        onChange={(e) => setBPlus(e.target.value)}
@@ -729,11 +784,10 @@ function InstrumentCreateModal(props) {
                                         {insType === '구조물기울기계' && (
                                             <div className={'col-6 d-flex flex-column mt-2'}>
                                                 <label htmlFor={'bMinus'}
-                                                       className={'form-label mt-2'}>
+                                                       className={'form-label'}>
                                                     B(-):
                                                 </label>
                                                 <input type={'text'}
-                                                       className={'form-control'}
                                                        id={'bMinus'}
                                                        value={bMinus}
                                                        onChange={(e) => setBMinus(e.target.value)}
@@ -747,14 +801,14 @@ function InstrumentCreateModal(props) {
                         </div>
                         <div className={'modal-footer'}>
                             <button type={'button'}
-                                    className={'btn btn-outline-dark opacity-50'}
+                                    className={'close-btn'}
                                     data-bs-dismiss={'modal'}
                                     onClick={handleCloseModal}
                             >
                                 Close
                             </button>
                             <button type={'button'}
-                                    className={'btn btn-success opacity-50'} onClick={handleCreateInstrument}
+                                    className={'confirm-btn'} onClick={handleCreateInstrument}
                             >
                                 계측기 생성
                             </button>

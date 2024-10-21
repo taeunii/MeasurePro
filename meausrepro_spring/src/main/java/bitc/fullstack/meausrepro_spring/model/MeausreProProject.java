@@ -48,7 +48,7 @@ public class MeausreProProject {
     private String measurer; // 계측사
 
     @Column(name = "site_check", nullable = false, length = 1)
-    private char siteCheck = 'N'; // 검사 종료 여부 (N: 진행, Y: 종료)
+    private char siteCheck = 'N'; // 공사 종료 여부 (N: 진행, Y: 종료)
 
     @Column(name = "geometry", nullable = false, columnDefinition = "TEXT")
     private String geometry; // 지오매트리 정보 (지도에 표시될 영역)

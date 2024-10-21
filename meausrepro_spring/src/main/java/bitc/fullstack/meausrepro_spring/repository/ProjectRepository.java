@@ -23,4 +23,20 @@ public interface ProjectRepository extends JpaRepository<MeausreProProject, Stri
     // 어플 전용 진행 중인 프로젝트 모두 보기
     @Query("SELECT p FROM MeausreProProject p WHERE p.companyIdx.idx = :companyId AND p.siteCheck = 'N'")
     List<MeausreProProject> appFindByAll(int companyId);
+
+    // 종료된 프로젝트 모두 보기 (소속 작업 그룹 있을 경우)
+    @Query("SELECT p FROM MeausreProProject p WHERE p.companyIdx.idx = :companyId AND p.siteCheck = 'Y'")
+    List<MeausreProProject> findByOutProject(int companyId);
+
+    // 종료된 프로젝트 모두 보기 (소속 작업 그룹 없을 경우)
+    @Query("SELECT p FROM MeausreProProject p WHERE (:topManager = '1' OR p.userIdx.id = :id) AND p.siteCheck = 'Y'")
+    List<MeausreProProject> findByOutProjectAll(String id, String topManager);
+
+    // 진행, 종료 프로젝트 모두 보기 (소속 작업 그룹 있을 경우)
+    @Query("SELECT p FROM MeausreProProject p WHERE p.companyIdx.idx = :companyId ORDER BY p.siteCheck ASC")
+    List<MeausreProProject> findByProject(int companyId);
+
+    // 진행, 종료 프로젝트 모두 보기 (소속 작업 그룹 없을 경우)
+    @Query("SELECT p FROM MeausreProProject p WHERE (:topManager = '1' OR p.userIdx.id = :id) ORDER BY p.siteCheck ASC")
+    List<MeausreProProject> findByProjectAll(String id, String topManager);
 }

@@ -61,7 +61,7 @@ const InsPage = () => {
     }, [user, navigate]);
 
     return (
-        <div className='d-flex vh-100'>
+        <div className={'d-flex vh-100'}>
             <CustomSidebar topManager={user.topManager}/>
             <div className={'insMainLayout'}>
                 {instrument ? (

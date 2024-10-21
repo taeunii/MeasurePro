@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -33,11 +34,25 @@ public class ProjectController {
     }
 
     // 진행 중인 프로젝트 모두 보기
-    @GetMapping("/inProgress/{id}/{topManager}")
-    public List<MeausreProProject> inProgress(@PathVariable String id, @PathVariable String topManager) {
-        System.out.println("\n" + id + ": " + topManager + "\n");
-        return projectService.inProgress(id, topManager);
+    @GetMapping("/inProgress/{id}")
+    public List<MeausreProProject> inProgress(@PathVariable String id) {
+        System.out.println("\n" + id + "\n");
+        return projectService.appInProgress(id);
     }
+
+    // 프로젝트 보기 (진행 중, 종료, 모두보기)
+    @GetMapping("/{id}/{stats}")
+    public List<MeausreProProject> statsProject(@PathVariable String id, @PathVariable String stats) {
+        System.out.println("\n" + stats + "\n");
+        if (Objects.equals(stats, "in")) {
+            return projectService.appInProgress(id);
+        } else if (Objects.equals(stats, "out")) {
+            return projectService.outProject(id);
+        } else {
+            return projectService.allProject(id);
+        }
+    }
+
     // 어플 전용 진행 중인 프로젝트 모두 보기
     @GetMapping("/appInProgress/{id}")
     public List<MeausreProProject> appInProgress(@PathVariable String id) {
@@ -91,6 +106,23 @@ public class ProjectController {
             existingProject.setEndDate(updatedProject.getEndDate());
             existingProject.setSiteCheck(updatedProject.getSiteCheck());
             existingProject.setCompanyIdx(updatedProject.getCompanyIdx());
+
+            // 나머지 필드는 그대로 유지
+            projectService.save(existingProject);
+
+            return ResponseEntity.ok("프로젝트 수정 성공");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("프로젝트를 찾을 수 없습니다.");
+        }
+    }
+
+    // 프로젝트 진행여부 수정
+    @PutMapping("/update/{idx}/{stats}")
+    public ResponseEntity<String> updateProjectSiteCheck(@PathVariable int idx, @PathVariable String stats) {
+        Optional<MeausreProProject> projectOptional = projectService.findById(idx);
+        if (projectOptional.isPresent()) {
+            MeausreProProject existingProject = projectOptional.get();
+            existingProject.setSiteCheck(stats.charAt(0));
 
             // 나머지 필드는 그대로 유지
             projectService.save(existingProject);

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -44,8 +45,53 @@ public class ProjectService {
     }
 
     // 진행 중인 프로젝트 모두 보기
-    public List<MeausreProProject> inProgress(String id, String topManager) {
-        return projectRepository.findAllByIdInProgress(id, topManager);
+    public List<MeausreProProject> appInProgress(String id) {
+        Optional<MeausreProUser> user = userRepository.findByUserId(id);
+
+        if (user.isPresent()) {
+            MeausreProUser userObj = user.get();
+            if (userObj.getCompanyIdx() != null) {
+                return projectRepository.appFindByAll(userObj.getCompanyIdx().getIdx());
+            }
+            else {
+                return projectRepository.findAllByIdInProgress(userObj.getId(), userObj.getTopManager());
+            }
+        } else {
+            // 사용자 정보가 없는 경우 처리
+            throw new IllegalArgumentException("사용자 정보를 찾을 수 없습니다.");
+        }
+    }
+
+    // 종료된 프로젝트
+    public List<MeausreProProject> outProject(String id) {
+        Optional<MeausreProUser> user = userRepository.findByUserId(id);
+        if (user.isPresent()) {
+            MeausreProUser userObj = user.get();
+            if (userObj.getCompanyIdx() != null) {
+                return projectRepository.findByOutProject(userObj.getCompanyIdx().getIdx());
+            } else {
+                return projectRepository.findByOutProjectAll(userObj.getId(), userObj.getTopManager());
+            }
+        } else {
+            // 사용자 정보가 없는 경우 처리
+            throw new IllegalArgumentException("사용자 정보를 찾을 수 없습니다.");
+        }
+    }
+
+    // 진행, 종료 프로젝트 모두 보기
+    public List<MeausreProProject> allProject(String id) {
+        Optional<MeausreProUser> user = userRepository.findByUserId(id);
+        if (user.isPresent()) {
+            MeausreProUser userObj = user.get();
+            if (userObj.getCompanyIdx() != null) {
+                return projectRepository.findByProject(userObj.getCompanyIdx().getIdx());
+            } else {
+                return projectRepository.findByProjectAll(userObj.getId(), userObj.getTopManager());
+            }
+        } else {
+            // 사용자 정보가 없는 경우 처리
+            throw new IllegalArgumentException("사용자 정보를 찾을 수 없습니다.");
+        }
     }
 
     // 공사 현장 검색
@@ -108,24 +154,6 @@ public class ProjectService {
             return ResponseEntity.ok("프로젝트 수정 성공");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("프로젝트를 찾을 수 없습니다.");
-        }
-    }
-
-    // 어플 전용 진행 중인 프로젝트 모두 보기
-    public List<MeausreProProject> appInProgress(String id) {
-        Optional<MeausreProUser> user = userRepository.findByUserId(id);
-
-        if (user.isPresent()) {
-            MeausreProUser userObj = user.get();
-            if (userObj.getCompanyIdx() != null) {
-                return projectRepository.appFindByAll(userObj.getCompanyIdx().getIdx());
-            }
-            else {
-                return projectRepository.findAllByIdInProgress(userObj.getId(), userObj.getTopManager());
-            }
-        } else {
-            // 사용자 정보가 없는 경우 처리
-            throw new IllegalArgumentException("사용자 정보를 찾을 수 없습니다.");
         }
     }
 }
