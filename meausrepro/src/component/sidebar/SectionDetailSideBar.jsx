@@ -146,7 +146,7 @@ function SectionDetailSideBar(props) {
             document.body.removeChild(a);
 
             // url 해제
-            window.url.revokeObjectURL(url);
+            window.URL.revokeObjectURL(url);
 
         } catch (e) {
             console.log(e);
