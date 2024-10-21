@@ -155,7 +155,7 @@ function MapComponent(props) {
     useEffect(() => {
         if (user && user.id) {
             axios
-                .get(`http://localhost:8080/MeausrePro/Project/inProgress/${encodeURIComponent(user.id)}/${encodeURIComponent(user.topManager)}`)
+                .get(`http://localhost:8080/MeausrePro/Project/inProgress/${encodeURIComponent(user.id)}`)
                 .then((res) => {
                     const { data } = res;
                     setPolygons(data); // 전체 프로젝트 데이터를 저장

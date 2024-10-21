@@ -19,6 +19,8 @@ import java.util.Optional;
 public class ProjectController {
     @Autowired
     private ProjectService projectService;
+    @Autowired
+    private CompanyService companyService;
 
     // 프로젝트 저장
     @PostMapping("/save")
@@ -95,7 +97,7 @@ public class ProjectController {
     }
 
     // 프로젝트 수정
-    @PutMapping("/update/{idx}")
+    @PutMapping("/updateProject/{idx}")
     public ResponseEntity<String> updateProject(@PathVariable int idx, @RequestBody MeausreProProject updatedProject) {
         Optional<MeausreProProject> projectOptional = projectService.findById(idx);
         if (projectOptional.isPresent()) {
@@ -105,7 +107,6 @@ public class ProjectController {
             existingProject.setSiteName(updatedProject.getSiteName());
             existingProject.setEndDate(updatedProject.getEndDate());
             existingProject.setSiteCheck(updatedProject.getSiteCheck());
-            existingProject.setCompanyIdx(updatedProject.getCompanyIdx());
 
             // 나머지 필드는 그대로 유지
             projectService.save(existingProject);

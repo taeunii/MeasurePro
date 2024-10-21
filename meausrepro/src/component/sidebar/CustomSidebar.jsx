@@ -1,16 +1,28 @@
 import { Link, useLocation } from 'react-router-dom';
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import './Sidebar.css'
+import UserContext from "../../context/UserContext.jsx";
+import {useNavigate} from "react-router";
 
 function CustomSidebar(props) {
     const { topManager } = props;
     const location = useLocation();
+    const navigate = useNavigate();
 
     // 회원 관리 dropDown
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
     }
+
+    // 로그아웃
+    const { setUser } = useContext(UserContext);
+    const handleLogOut = () => {
+        setUser(null);
+        localStorage.removeItem('token');
+        sessionStorage.removeItem('user');
+        navigate('/');
+    };
 
     // 회원정보관리, 작업그룹관리 페이지에서는 드롭다운 open 유지
     useEffect(() => {
@@ -40,20 +52,6 @@ function CustomSidebar(props) {
                                 d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
                         </svg>
                         <span>메인</span>
-                    </div>
-                </Link>
-                <Link
-                    to="/Report"
-                    className={`text-decoration-none`}
-                >
-                    <div className={`customSideBarLink ${location.pathname === '/Report' ? 'active' : ''}`}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                             className="bi bi-printer" viewBox="0 0 16 16">
-                            <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1"/>
-                            <path
-                                d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1"/>
-                        </svg>
-                        <span>리포트</span>
                     </div>
                 </Link>
                 {topManager === '1' && (<div>
@@ -117,7 +115,7 @@ function CustomSidebar(props) {
                     </div>
                 </Link>
             </div>
-            <button className={'customSideBarBtn'}>
+            <button className={'customSideBarBtn'} onClick={handleLogOut}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                      className="bi bi-box-arrow-left" viewBox="0 0 16 16">
                     <path fillRule="evenodd"

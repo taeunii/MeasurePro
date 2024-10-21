@@ -39,9 +39,14 @@ function ProjectEditModal(props) {
     // 프로젝트 수정
     const handleUpdateProject = async () => {
         try {
-            await axios.put(`http://localhost:8080/MeausrePro/Project/update/${projectData.idx}`, {
+            await axios.put(`http://localhost:8080/MeausrePro/Project/updateProject/${projectData.idx}`, {
                 userIdx: user,
-                companyIdx: companyIdx,
+                companyIdx: companyIdx ? {
+                    idx:companyIdx.idx,
+                    company: companyIdx.company,
+                    companyName: companyIdx.companyName,
+                    companyIng: companyIdx.companyIng
+                } : null,
                 endDate: endDate,
                 siteCheck: status,
                 siteName: siteName,

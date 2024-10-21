@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router";
+import {useNavigate, useParams} from "react-router";
 import axios from "axios";
 import UserContext from "../../context/UserContext.jsx";
 import CustomSidebar from "../sidebar/CustomSidebar.jsx";
@@ -10,6 +10,8 @@ const CompAnalysis = () => {
     const { user } = useContext(UserContext);
     const [deviceList, setDeviceList] = useState([]);
     const [measurementsList, setMeasurementsList] = useState({});
+
+    const navigate = useNavigate();
 
     // 계측기 리스트 불러오기
     useEffect(() => {
@@ -47,6 +49,13 @@ const CompAnalysis = () => {
             });
         }
     }, [deviceList]);
+
+    // 로그인 정보 없을 시, 로그인 페이지로 이동
+    useEffect(() => {
+        if (!user || !user.id) {
+            navigate('/');
+        }
+    }, [user, navigate]);
 
     return (
         <div className="d-flex vh-100" style={{overflow: 'hidden'}}>
