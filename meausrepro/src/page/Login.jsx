@@ -80,9 +80,10 @@ function Login() {
             navigate('/MeausrePro');
         })
         .catch(err => {
+            console.log(err);
             Swal.fire({
                 icon: "error",
-                text: `${err}`,
+                text: `아이디와 비밀번호를 확인해주세요.`,
                 showCancelButton: false,
                 confirmButtonText: '확인'
             })
