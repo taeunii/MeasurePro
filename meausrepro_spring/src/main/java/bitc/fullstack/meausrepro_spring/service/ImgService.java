@@ -93,4 +93,12 @@ public class ImgService {
         }
         return false;
     }
+
+    public void deleteBySectionIdx(int idx) {
+        List<MeausreProImg> imgList = imgRepository.findAllBySectionId(idx);
+
+        for (MeausreProImg img : imgList) {
+            deleteImage(img.getIdx());
+        }
+    }
 }

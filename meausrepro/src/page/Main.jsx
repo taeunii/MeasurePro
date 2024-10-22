@@ -204,15 +204,15 @@ function Main() {
             setIsInsBtnText('계측기 취소');
 
             // 구간 클릭 및 계측기 리스트 호출
-            // handleSectionClick(section);
-            // handleInstrumentList(section.idx);
+            handleSectionClick(section);
+            handleInstrumentList(section.idx);
         } else {
             setIsDrawingEnabledMarker(false);
             setIsInsBtnText('계측기 추가');
 
             // 구간 클릭 및 계측기 리스트 호출
-            // handleSectionClick(section);
-            // handleInstrumentList(section.idx);
+            handleSectionClick(section);
+            handleInstrumentList(section.idx);
         }
     };
 
