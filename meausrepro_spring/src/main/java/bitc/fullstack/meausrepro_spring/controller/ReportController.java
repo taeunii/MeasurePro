@@ -57,10 +57,13 @@ public class ReportController {
             // 파일 저장
             Files.write(filePath, file.getBytes());
 
+            // 서버 URL 생성 (정적 경로를 통해 접근할 수 있는 URL)
+            String fileUrl = "http://localhost:8080/reports/" + fileName;
+
             // 파일 정보 DB 저장
             MeausreProReport report = new MeausreProReport();
             report.setFileName(fileName);
-            report.setFilePath(filePath.toString());
+            report.setFilePath(fileUrl);
             report.setUploadDate(LocalDateTime.now().toString());
 
             // 서비스 호출하여 보고서 저장

@@ -26,7 +26,8 @@ function MainSideBar(props) {
         onInstrumentCreated, // Main으로부터 받은 함수
         instrumentList,  // Main에서 전달된 계측기 리스트 사용
         handleInstrumentList, // Main에서 전달된 함수 사용
-        setInstrumentList
+        setInstrumentList,
+        markerStates
     } = props;
 
     const [isSelectProject, setIsSelectProject] = useState(null);
@@ -257,7 +258,7 @@ function MainSideBar(props) {
                                         </button>
                                         <button className={'insCreateBtn'} type={'button'}
                                                 onClick={() => enableDrawingMarkers(section)}>
-                                            {instrumentBtnText}
+                                            {markerStates[section.idx] ? '계측기 취소' : '계측기 추가'}
                                         </button>
                                     </div>
                                     {selectedSection?.idx === section.idx && (

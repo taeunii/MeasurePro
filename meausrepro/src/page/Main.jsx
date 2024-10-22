@@ -39,6 +39,7 @@ function Main() {
     const [isInsBtnText, setIsInsBtnText] = useState('계측기 추가'); // 계측기 추가 버튼 텍스트 관리
     const [isSelectedSection, setIsSelectedSection] = useState(null);
     const [instrumentList, setInstrumentList] = useState([]);
+    const [markerStates, setMarkerStates] = useState({}); // 구간별로 버튼 상태 저장
 
     // 로그인 정보 없을 시, 로그인 페이지로 이동
     useEffect(() => {
@@ -190,21 +191,28 @@ function Main() {
 
     // 계측기 추가 버튼 클릭 시 마커 생성 모드 활성화 및 취소
     const enableDrawingMarkers = (section) => {
-        if (isDrawingEnabledMarker) {
-            setIsDrawingEnabledMarker(false);
-            setIsInsBtnText('계측기 추가');
+        setMarkerStates((prevState) => {
+            const newState = { ...prevState };
 
-            // 구간 클릭 및 계측기 리스트 호출
-            handleSectionClick(section);
-            handleInstrumentList(section.idx);
-        } else {
+            newState[section.idx] = !prevState[section.idx];
+            return newState;
+        });
+
+        if (!markerStates[section.idx]) {
             // 마커 생성 모드로 진입
             setIsDrawingEnabledMarker(true);
             setIsInsBtnText('계측기 취소');
 
             // 구간 클릭 및 계측기 리스트 호출
-            handleSectionClick(section);
-            handleInstrumentList(section.idx);
+            // handleSectionClick(section);
+            // handleInstrumentList(section.idx);
+        } else {
+            setIsDrawingEnabledMarker(false);
+            setIsInsBtnText('계측기 추가');
+
+            // 구간 클릭 및 계측기 리스트 호출
+            // handleSectionClick(section);
+            // handleInstrumentList(section.idx);
         }
     };
 
@@ -287,7 +295,7 @@ function Main() {
                     instrumentList={instrumentList} // 상태 전달
                     handleInstrumentList={handleInstrumentList} // 함수 전달
                     handleProjectInstrumentList={handleProjectInstrumentList} // 함수 전달
-
+                    markerStates={markerStates}
                 />
                 <div className={'flex-grow-1'}>
                     <MapComponent
