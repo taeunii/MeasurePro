@@ -75,7 +75,13 @@ function SectionDetailSideBar(props) {
                 setReports(response.data);
             })
             .catch(error => {
-                console.error("리포트 불러오기 실패:", error);
+                Swal.fire({
+                    icon: "error",
+                    text: `리포트를 불러오지 못했습니다.`,
+                    showCancelButton: false,
+                    confirmButtonText: '확인'
+                })
+                console.log(error);
             });
     }
 
@@ -93,7 +99,13 @@ function SectionDetailSideBar(props) {
                 link.click();
             })
             .catch(error => {
-                console.error("파일 다운로드 실패:", error);
+                Swal.fire({
+                    icon: "error",
+                    text: `다운로드 중 오류가 발생했습니다.`,
+                    showCancelButton: false,
+                    confirmButtonText: '확인'
+                })
+                console.log(error);
             });
     };
 

@@ -1,7 +1,5 @@
 package bitc.fullstack.meausrepro_spring.service;
 
-import bitc.fullstack.meausrepro_spring.model.MeausreProCompany;
-import bitc.fullstack.meausrepro_spring.model.MeausreProSection;
 import bitc.fullstack.meausrepro_spring.model.MeausreProUser;
 import bitc.fullstack.meausrepro_spring.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +14,8 @@ import java.util.Optional;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ReportService reportService;
 
     // 로그인
     public Optional<MeausreProUser> findById(String userId) {
@@ -64,6 +62,7 @@ public class UserService {
         Optional<MeausreProUser> UserOptional = userRepository.findByIdx(idx);
         if (UserOptional.isPresent()) {
             MeausreProUser user = UserOptional.get();
+            reportService.deleteByUserId(user.getId());
             userRepository.delete(user);
             return ResponseEntity.ok("회원정보 삭제 성공");
         } else {

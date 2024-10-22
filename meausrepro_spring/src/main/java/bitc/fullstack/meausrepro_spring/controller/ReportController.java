@@ -75,11 +75,13 @@ public class ReportController {
         }
     }
 
+    // 구간별 report 리스트
     @GetMapping("/reports/{sectionId}")
     public List<MeausreProReport> getReportsBySection(@PathVariable int sectionId) {
         return reportService.getReportsBySection(sectionId);
     }
 
+    // 리포트 다운로드
     @GetMapping("/download/{fileName}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) {
         try {
@@ -96,5 +98,11 @@ public class ReportController {
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);  // 오류 시 500 처리
         }
+    }
+
+    // 리포트 삭제
+    @DeleteMapping("/delete/{idx}")
+    public ResponseEntity<String> deleteReport(@PathVariable int idx) {
+        return reportService.deleteByReportIdx(idx);
     }
 }
