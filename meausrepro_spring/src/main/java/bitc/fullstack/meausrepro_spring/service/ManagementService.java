@@ -29,7 +29,9 @@ public class ManagementService {
     public void deleteByInsId(int insIdx) {
         Optional<MeausreProManagement> management = managementRepository.findByInsIdx(insIdx);
 
-        managementTypeService.delete(management.get().getIdx());
-        managementRepository.deleteById(String.valueOf(management.get().getIdx()));
+        if (management.isPresent()) {
+            managementTypeService.delete(management.get().getIdx());
+            managementRepository.deleteById(String.valueOf(management.get().getIdx()));
+        }
     }
 }

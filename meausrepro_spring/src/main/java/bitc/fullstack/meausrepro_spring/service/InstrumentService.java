@@ -105,9 +105,13 @@ public class InstrumentService {
 
     // 계측기 삭제 (계측기 추가 정보도 함께 삭제)
     public void deleteById(int idx) {
-        // 계측기 측정값 삭제
-        managementService.deleteByInsId(idx);
-        instrumentTypeService.deleteByInsId(idx); // 계측기 추가 정보 삭제
-        instrumentRepository.deleteById(String.valueOf(idx)); // 계측기 삭제
+        Optional<MeausreProInstrument> optIns = instrumentRepository.findByIdx(idx);
+
+        if (optIns.isPresent()) {
+            // 계측기 측정값 삭제
+            managementService.deleteByInsId(idx);
+            instrumentTypeService.deleteByInsId(idx); // 계측기 추가 정보 삭제
+            instrumentRepository.deleteById(String.valueOf(idx)); // 계측기 삭제
+        }
     }
 }

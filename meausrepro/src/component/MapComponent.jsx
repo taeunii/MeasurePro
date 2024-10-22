@@ -61,6 +61,9 @@ function MapComponent(props) {
                 zoomControlOptions: {
                     position: naver.maps.Position.RIGHT_CENTER,
                 },
+                tileSpare: 3,
+                maxTilesLoading: 10,
+                tileCache: true,
             };
 
             const map = new naver.maps.Map("map", mapOptions);

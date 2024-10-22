@@ -57,8 +57,10 @@ public class SectionService {
         if (section.isPresent()) {
             // 구간에 속한 리포트 삭제
             reportService.deleteBySectionIdx(section.get().getIdx());
+
             // 구간에 속한 이미지 삭제
             imgService.deleteBySectionIdx(section.get().getIdx());
+
             // 구간에 속한 계측기 삭제
             instrumentService.deleteInstrumentBySection(section.get().getIdx());
             sectionRepository.deleteById(String.valueOf(idx));
