@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
                     response: Response<MeausreProUser>
                 ) {
                     if (response.isSuccessful) {
-                        val intent = Intent(this@MainActivity, MainActivity_MeausrePro::class.java)
+                        val intent = Intent(this@MainActivity, MainActivity_MeasurePro::class.java)
                         intent.putExtra("id", id)
                         startActivity(intent)
                     }

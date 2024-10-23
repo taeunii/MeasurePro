@@ -28,7 +28,7 @@
         android:theme="@style/Theme.MeausrePro_App"
         tools:targetApi="31" >
         <activity
-            android:name="com.example.meausrepro_app.MainActivity_MeausrePro"
+            android:name="com.example.meausrepro_app.MainActivity_MeasurePro"
             android:exported="false" />
         <activity
             android:name="com.example.meausrepro_app.MainActivity"

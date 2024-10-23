@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context="com.example.meausrepro_app.MainActivity_MeausrePro">
+    tools:context="com.example.meausrepro_app.MainActivity_MeasurePro">
 
     <FrameLayout
         android:id="@+id/mainContainer"

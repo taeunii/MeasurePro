@@ -11,7 +11,7 @@ import com.example.meausrepro_android.databinding.ActivityMainMeausreProBinding
 import com.example.meausrepro_app.fragment.HomeFragment
 import com.example.meausrepro_app.fragment.QRFragment
 
-class MainActivity_MeausrePro : AppCompatActivity() {
+class MainActivity_MeasurePro : AppCompatActivity() {
     lateinit var binding:ActivityMainMeausreProBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
