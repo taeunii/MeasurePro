@@ -42,8 +42,5 @@
 
 * 토목 계측 관리 정보 자동화 시스템 : 프로젝트, 구간, 계측기 관련 기능 및 구간별 보고서, 종합 분석지, QR, 리포트 및 이미지 업로드 기능 웹 & 앱 구현
 
-<img src="https://github.com/user-attachments/assets/f3b75a5d-f193-489d-b304-f15e98a21d35" style="width: 600px">
-<br><br><br>
-
-<img src="https://github.com/user-attachments/assets/f9d39f4a-3391-4dc4-b12c-791f205f8ad5" style="width: 600px">
+<img src="https://github.com/user-attachments/assets/69d466e9-2818-4b63-b60a-8cd412416e50" style="width: 600px">
 <br><br>
